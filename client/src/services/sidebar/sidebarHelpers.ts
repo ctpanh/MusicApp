@@ -7,6 +7,7 @@ import {
   IconZingchart,
   IconTopic,
   IconTop100,
+  IconUpload,
 } from "@/assets/icons";
 
 export enum SelectedOptionSidebar {
@@ -18,6 +19,7 @@ export enum SelectedOptionSidebar {
   History = "history",
   Favorite = "favorite",
   Playlist = "playlist",
+  Upload = "upload",
 }
 
 export const sidebarItems = [
@@ -68,5 +70,11 @@ export const sidebarItems = [
     lable: "Playlist",
     IconComponent: IconListMusic,
     link: "/playlist",
+  },
+  {
+    id: SelectedOptionSidebar.Upload,
+    lable: "Đã tải lên",
+    IconComponent: IconUpload,
+    link: "/upload",
   },
 ];

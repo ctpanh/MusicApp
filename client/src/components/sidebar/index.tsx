@@ -32,13 +32,15 @@ const Sidebar = () => {
       setSelectedOption(SelectedOptionSidebar.Favorite);
     } else if (currentURL.includes("playlist")) {
       setSelectedOption(SelectedOptionSidebar.Playlist);
+    } else if (currentURL.includes("upload")) {
+      setSelectedOption(SelectedOptionSidebar.Upload);
     } else {
       setSelectedOption(SelectedOptionSidebar.Discover);
     }
   }, [currentURL]);
   return (
     <div className="h-full w-[240px] flex flex-col bg-[#231b2e]">
-      <div className="flex items-center px-5 h-[70px]">
+      <div className="flex items-center px-5 h-[70px] w-[240px]">
         <Image src={logoUrl} width={120} height={40} alt="logo" />
       </div>
       <div className="overflow-auto">
