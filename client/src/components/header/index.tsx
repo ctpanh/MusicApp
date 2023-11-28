@@ -1,5 +1,5 @@
 "use client";
-import { IconSetting, IconUser } from "@/assets/icons";
+import { IconSearch, IconSetting, IconUser } from "@/assets/icons";
 import {
   headeSettingItem,
   headerAccountItem,
@@ -15,32 +15,18 @@ const Header = () => {
       <form className="w-full px-5">
         <label
           htmlFor="default-search"
-          className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+          className="mb-2 text-sm font-medium text-white sr-only"
         >
           Search
         </label>
         <div className="relative ">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <svg
-              className="w-5 h-5 text-white"
-              aria-hidden="true"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 20 20"
-            >
-              <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-              />
-            </svg>
+            <IconSearch />
           </div>
           <input
             type="search"
             id="default-search"
-            className="block w-1/2 p-4 pl-10 text-sm text-white border border-gray-300 rounded-full bg-[#393243] focus:bg-[#34224f]"
+            className="block w-1/2 p-4 pl-10 text-sm text-white rounded-full bg-[#393243] focus:bg-[#34224f]"
             placeholder="Tìm kiếm bài hát, nghệ sĩ, lời bài hát..."
             required
           />
@@ -60,7 +46,7 @@ const Header = () => {
           <div
             className={`${
               !clickedSetting && "hidden"
-            } absolute right-16 z-10 mt-32 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+            } absolute flex flex-col justify-between right-16 z-10 mt-32 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
           >
             {headeSettingItem.map((item, index) => (
               <div
@@ -86,7 +72,7 @@ const Header = () => {
           <div
             className={`${
               !clickedAccount && "hidden"
-            } absolute right-16 z-10 mt-2 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
+            } absolute flex flex-col justify-between right-16 z-10 mt-2 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
           >
             {headerAccountItem.map((item, index) => (
               <div key={index} className="flex items-center">
