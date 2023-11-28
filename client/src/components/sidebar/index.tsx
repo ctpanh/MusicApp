@@ -12,7 +12,7 @@ import { IconAdd } from "@/assets/icons";
 
 const Sidebar = () => {
   const [selectedOption, setSelectedOption] = useState<SelectedOptionSidebar>(
-    SelectedOptionSidebar.Discover
+    SelectedOptionSidebar.Discovery
   );
   const logoUrl =
     "https://zmp3-static.zmdcdn.me/skins/zmp3-v6.1/images/backgrounds/logo-dark.svg";
@@ -35,7 +35,7 @@ const Sidebar = () => {
     } else if (currentURL.includes("upload")) {
       setSelectedOption(SelectedOptionSidebar.Upload);
     } else {
-      setSelectedOption(SelectedOptionSidebar.Discover);
+      setSelectedOption(SelectedOptionSidebar.Discovery);
     }
   }, [currentURL]);
   return (

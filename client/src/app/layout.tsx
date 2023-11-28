@@ -21,8 +21,10 @@ export default function RootLayout({
       <body className={inter.className}>
         <main className="h-screen flex bg-[#170f23]">
           <Sidebar />
-          <Header />
-          {children}
+          <div className="w-full h-full">
+            <Header />
+            {children}
+          </div>
         </main>
       </body>
     </html>

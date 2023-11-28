@@ -11,7 +11,7 @@ const Header = () => {
   const [clickedAccount, setClickedAccount] = useState(false);
   const [clickedSetting, setClickedSetting] = useState(false);
   return (
-    <div className="px-16 py-4 w-full h-fit flex items-center justify-between bg-opacity">
+    <div className="px-16 py-4 w-full h-[84px] flex items-center justify-between bg-opacity">
       <form className="w-full px-5">
         <label
           htmlFor="default-search"
@@ -44,6 +44,7 @@ const Header = () => {
             <IconSetting />
           </div>
           <div
+            onMouseLeave={() => setClickedSetting(false)}
             className={`${
               !clickedSetting && "hidden"
             } absolute flex flex-col justify-between right-16 z-10 mt-32 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
@@ -70,6 +71,7 @@ const Header = () => {
             <IconUser />
           </div>
           <div
+            onMouseLeave={() => setClickedAccount(false)}
             className={`${
               !clickedAccount && "hidden"
             } absolute flex flex-col justify-between right-16 z-10 mt-2 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}

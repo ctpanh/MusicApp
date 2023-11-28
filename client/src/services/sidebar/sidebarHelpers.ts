@@ -1,5 +1,5 @@
 import {
-  IconDiscover,
+  IconDiscovery,
   IconLibrary,
   IconListMusic,
   IconLove,
@@ -11,7 +11,7 @@ import {
 } from "@/assets/icons";
 
 export enum SelectedOptionSidebar {
-  Discover = "discover",
+  Discovery = "discovery",
   Chart = "chart",
   Library = "library",
   Theme = "theme",
@@ -24,9 +24,9 @@ export enum SelectedOptionSidebar {
 
 export const sidebarItems = [
   {
-    id: SelectedOptionSidebar.Discover,
+    id: SelectedOptionSidebar.Discovery,
     lable: "Khám phá",
-    IconComponent: IconDiscover,
+    IconComponent: IconDiscovery,
     link: "/",
   },
   {

@@ -72,7 +72,7 @@ export const IconPlay = () => {
   );
 };
 
-export const IconDiscover = () => {
+export const IconDiscovery = () => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
       <path
@@ -617,6 +617,34 @@ export const IconSearch = () => {
         strokeWidth="2"
         d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
       />
+    </svg>
+  );
+};
+
+export const IconGoRight = () => {
+  return (
+    <svg
+      version="1.1"
+      id="Layer_1"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
+      width={24}
+      height={24}
+      viewBox="0 0 64 64"
+      enable-background="new 0 0 64 64"
+      xmlSpace="preserve"
+    >
+      <g>
+        <polyline
+          fill="none"
+          stroke="#FFFFFF"
+          stroke-width="2"
+          stroke-linejoin="bevel"
+          stroke-miterlimit="10"
+          points="27,15 44,32 
+       27,49 	"
+        />
+      </g>
     </svg>
   );
 };
