@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 from models.user import UserModel
 from models.song import SongModel
-from schemas.songSchema import SongCreate
+from schemas.songSchema import SongCreate, SongUpdate
 from database import getDatabase
 from sqlalchemy.orm import Session
 
@@ -46,19 +46,19 @@ class SongController:
 
     def getAllSong(db: Session = Depends(getDatabase)):
         return db.query(SongModel).all()
-    # def updateSong(SongId: int, Song: SongUpdate, db: Session):
-    #     dbSongId = db.query(SongModel).filter(SongModel.id == SongId).first()
-
-    #     if Song.name is not None:
-    #         dbSongId.name = Song.name
-    #     else:
-    #         raise HTTPException(status_code=400, detail="Invalid name")
-
-    #     db.commit()
-    #     return {"msg": "Updated"}
-    
-    def deleteSong(SongId: int, db: Session):
+    def updateSong(SongId: int, Song: SongUpdate, db: Session):
         dbSongId = db.query(SongModel).filter(SongModel.id == SongId).first()
+
+        if Song.views is not None:
+            dbSongId.views = Song.views
+        else:
+            raise HTTPException(status_code=400, detail="Invalid views")
+
+        db.commit()
+        return {"msg": "Updated"}
+    
+    def deleteSong(songId: int, db: Session):
+        dbSongId = db.query(SongModel).filter(SongModel.id == songId).first()
         db.delete(dbSongId)
         db.commit()
         return {"msg": "Deleted"}

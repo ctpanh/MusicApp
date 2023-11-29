@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
-
+# from models.album import AlbumModel 
 from database import Base
 
 
@@ -17,4 +17,4 @@ class GenreModel(Base):
     name = Column(String(50))
 
     # Relationships
-    # albums = relationship("AlbumModel", back_populates="genre")
+    albums = relationship("AlbumModel", back_populates="genre")

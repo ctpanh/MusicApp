@@ -8,10 +8,10 @@ from sqlalchemy.orm import Session
 
 class GenreController:
     @staticmethod
-    def createGenre(request: GenreCreate, db: Session):
+    def createGenre(genre: GenreCreate, db: Session):
         newGenre = GenreModel(
             # user_id = request.user_id,
-            name=request.name,
+            name=genre.name,
         )
         db.add(newGenre)
         db.commit()
