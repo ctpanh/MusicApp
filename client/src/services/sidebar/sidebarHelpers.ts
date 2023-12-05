@@ -13,9 +13,7 @@ import {
 export enum SelectedOptionSidebar {
   Discovery = "discovery",
   Chart = "chart",
-  Library = "library",
   Theme = "theme",
-  Top100 = "top100",
   History = "history",
   Favorite = "favorite",
   Playlist = "playlist",
@@ -48,24 +46,24 @@ export const sidebarItemsLibrary = [
     id: SelectedOptionSidebar.History,
     lable: "Nghe gần đây",
     IconComponent: IconRecently,
-    link: "/history",
+    link: "/library/history",
   },
   {
     id: SelectedOptionSidebar.Favorite,
     lable: "Bài hát yêu thích",
     IconComponent: IconLove,
-    link: "/favorite",
+    link: "/library/favorite",
   },
   {
     id: SelectedOptionSidebar.Playlist,
     lable: "Playlist",
     IconComponent: IconListMusic,
-    link: "/playlist",
+    link: "/library/playlist",
   },
   {
     id: SelectedOptionSidebar.Upload,
     lable: "Đã tải lên",
     IconComponent: IconUpload,
-    link: "/upload",
+    link: "/library/upload",
   },
 ];
