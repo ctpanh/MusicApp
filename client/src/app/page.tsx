@@ -53,7 +53,7 @@ export default function Home() {
     getGenres();
     getAlbums();
     getSongs();
-    getRecentlySongs();
+    authorized && getRecentlySongs();
   }, []);
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto">
@@ -235,13 +235,16 @@ export default function Home() {
         <div key={index} className="mt-[48px]">
           <div className="flex justify-between p-4  text-xl">
             <div className="text-header text-white">{genre.name}</div>
-            <div className="flex items-center text-header text-white cursor-pointer hover:text-[#8d22c3]">
+            <Link
+              href={`/hub/${genre.id}`}
+              className="flex items-center text-header text-white cursor-pointer hover:text-[#8d22c3]"
+            >
               Xem thêm
               <IconGoRight />
-            </div>
+            </Link>
           </div>
           <div className="flex justify-center items-center px-4 gap-5">
-            {albums.map((item, index) => (
+            {albums.slice(0, 5).map((item, index) => (
               <div
                 onMouseEnter={() => setHoveredButton(item.id)}
                 onMouseLeave={() => setHoveredButton(null)}
