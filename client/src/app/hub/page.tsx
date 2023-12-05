@@ -1,11 +1,25 @@
 "use client";
 import { IconGoRight, IconPlay } from "@/assets/icons";
+import { getAllAlbums } from "@/services/discovery/discoveryApi";
+import { Album } from "@/services/discovery/discoveryHelpers";
+import { getAllGenre } from "@/services/hub/hubApi";
+import { Genre } from "@/services/hub/hubHelpers";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-  const [hoveredButton, setHoveredButton] = useState<string | null>(null);
+  const [hoveredButton, setHoveredButton] = useState<number | null>(null);
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [genre, setGenre] = useState<Genre[]>([]);
+  const getGenres = async () => {
+    const res = await getAllGenre();
+    setGenre(res.data);
+  };
 
+  const getAlbums = async () => {
+    const res = await getAllAlbums();
+    setAlbums(res.data);
+  };
   const highlights = [
     {
       id: 1,
@@ -18,33 +32,10 @@ export default function Home() {
       title: "test2",
     },
   ];
-  const albums = [
-    {
-      id: "test",
-      desc: "Ngày lễ hoàn hảo để tận hưởng cái ôm từ ai đó",
-      imgUrl: "/next.svg",
-    },
-    {
-      id: "test2",
-      desc: "Ngày lễ hoàn hảo để tận hưởng cái ôm từ ai đó",
-      imgUrl: "/next.svg",
-    },
-    {
-      id: "test3",
-      desc: "Ngày lễ hoàn hảo để tận hưởng cái ôm từ ai đó",
-      imgUrl: "/next.svg",
-    },
-  ];
-  const themes = [
-    {
-      id: 1,
-      title: "Những ngày đông ấm áp",
-    },
-    {
-      id: 2,
-      title: "Nhạc này siêu nhiệt",
-    },
-  ];
+  useEffect(() => {
+    getGenres();
+    getAlbums();
+  }, []);
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto text-white">
       <div className="px-5 mb-5">
@@ -71,10 +62,10 @@ export default function Home() {
           TẤT CẢ
         </div>
       </div>
-      {themes.map((item, index) => (
+      {genre.map((genre, index) => (
         <div key={index} className="mt-[48px]">
           <div className="flex justify-between p-4  text-xl">
-            <div className="text-header text-white">{item.title}</div>
+            <div className="text-header text-white">{genre.name}</div>
             <div className="flex items-center text-header text-white cursor-pointer hover:text-[#8d22c3]">
               Xem thêm
               <IconGoRight />
@@ -91,7 +82,7 @@ export default function Home() {
               >
                 <div className="flex flex-col justify-center items-center hover:scale-110 transition-transform duration-300">
                   <Image
-                    src={item.imgUrl}
+                    src={"/" + item.image_file_path}
                     width={100}
                     height={100}
                     alt="Image"
@@ -106,7 +97,7 @@ export default function Home() {
                   )}
                 </div>
                 <div className="text-xs font-bold tracking-tight text-white opacity-50">
-                  {item.desc}
+                  {item.title}
                 </div>
               </div>
             ))}
