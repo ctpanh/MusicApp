@@ -94,7 +94,7 @@ class UserController:
 
     def createUser(user: RegisterUser, db: Session = Depends(getDatabase)):
         db_user = UserModel(
-            user_name=user.user_name,
+            name=user.name,
             email=user.email,
             password=bcrypt(user.password),
         )
@@ -126,7 +126,7 @@ class UserController:
 
         response = {
             "id": user.id,
-            "user_name": user.user_name,
+            "name": user.name,
             "email": user.email,
             "jwtToken": access_token,
         }

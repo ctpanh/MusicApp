@@ -6,8 +6,17 @@ import {
 } from "@/services/header/headerHelpers";
 import Link from "next/link";
 import { useState } from "react";
+import Login from "../login";
+import Signup from "../signup";
 
 const Header = () => {
+  const [isLogin, setIsLogin] = useState(
+    typeof window !== "undefined" && localStorage.getItem("token ")
+      ? true
+      : false
+  );
+  const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [openSignupModal, setOpenSignupModal] = useState(false);
   const [clickedAccount, setClickedAccount] = useState(false);
   const [clickedSetting, setClickedSetting] = useState(false);
   return (
@@ -76,20 +85,48 @@ const Header = () => {
               !clickedAccount && "hidden"
             } absolute flex flex-col justify-between right-16 z-10 mt-2 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
           >
-            {headerAccountItem.map((item, index) => (
-              <div key={index} className="flex items-center">
-                <item.IconComponent />
-                <Link
-                  href={item.link}
-                  className="text-white block px-4 py-2 text-sm gap-2"
-                >
-                  {item.label}
-                </Link>
+            {isLogin ? (
+              <div>
+                {headerAccountItem.map((item, index) => (
+                  <div key={index} className="flex items-center">
+                    <item.IconComponent />
+                    <Link
+                      href={item.link}
+                      className="text-white block px-4 py-2 text-sm gap-2"
+                    >
+                      {item.label}
+                    </Link>
+                  </div>
+                ))}
               </div>
-            ))}
+            ) : (
+              <div
+                className="flex justify-center cursor-pointer"
+                onClick={() => setOpenLoginModal(true)}
+              >
+                <div className="flex items-center justify-center rounded-full border border-[#393243] w-1/6 py-2 px-6 text-xs text-white font-medium">
+                  Đăng nhập
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
+      {openLoginModal && (
+        <Login
+          openLoginModal={openLoginModal}
+          setOpenLoginModal={setOpenLoginModal}
+          openSignupModal={openSignupModal}
+          setOpenSignupModal={setOpenSignupModal}
+        />
+      )}
+
+      {openSignupModal && (
+        <Signup
+          openSignupModal={true}
+          setOpenSignupModal={setOpenSignupModal}
+        />
+      )}
     </div>
   );
 };

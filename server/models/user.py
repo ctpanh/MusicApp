@@ -5,6 +5,6 @@ import database
 class UserModel(database.Base):
     __tablename__ = "Users"
     id = Column(Integer, primary_key=True, index=True)
-    user_name = Column(String(50))
+    name = Column(String(50))
     email = Column(String(50), unique=True, index=True)
     password = Column(String(300))

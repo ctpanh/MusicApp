@@ -9,7 +9,7 @@ class Login(BaseModel):
 
 
 class RegisterUser(Login):
-    user_name: str
+    name: str
 
     class Config:
         orm_mode = True
@@ -22,4 +22,4 @@ class ConfirmPassword(BaseModel):
 class UpdateUser(ConfirmPassword):
     email: Optional[str] = None
     newPassword: Optional[str] = None
-    user_name: Optional[str] = None
+    name: Optional[str] = None

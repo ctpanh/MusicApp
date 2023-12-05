@@ -538,8 +538,8 @@ export const IconTheme = () => {
     <i className="icon">
       <svg width={24} height={24} viewBox="0 0 24 24" fill="#FFFFFF">
         <path
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           d="M15 9.0001V3.68056L14.3894 3.78233C13.4241 3.94321 12.434 3.86553 11.5056 3.55606L9.68377 2.94878L8.64856 2.60371C8.43573 2.53276 8.21878 2.48031 8 2.4462V6.5001C8 6.77624 7.77614 7.0001 7.5 7.0001C7.22386 7.0001 7 6.77624 7 6.5001V2.41688C6.51535 2.46358 6.0387 2.59878 5.59479 2.82073L5 3.11813V9.0001H15ZM8 12.0001C6.69378 12.0001 5.58254 11.1653 5.17071 10.0001L14.8293 10.0001C14.4175 11.1653 13.3062 12.0001 12 12.0001H11H9H8ZM9 13.0001V16.0001C9 16.5524 9.44772 17.0001 10 17.0001C10.5523 17.0001 11 16.5524 11 16.0001V13.0001H9ZM8 13.0001L8 16.0001C8 17.1047 8.89543 18.0001 10 18.0001C11.1046 18.0001 12 17.1047 12 16.0001V13.0001C14.2091 13.0001 16 11.2092 16 9.0001V3.09033C16 2.78136 15.7226 2.54634 15.4178 2.59713L14.225 2.79593C13.4205 2.93001 12.5955 2.86527 11.8218 2.60738L10 2.0001L8.96479 1.65503C7.70676 1.23568 6.33367 1.33326 5.14758 1.92631L4 2.5001V9.0001C4 11.2092 5.79086 13.0001 8 13.0001Z"
           fillOpacity="0.8"
         ></path>
@@ -631,16 +631,16 @@ export const IconGoRight = () => {
       width={24}
       height={24}
       viewBox="0 0 64 64"
-      enable-background="new 0 0 64 64"
+      enableBackground="new 0 0 64 64"
       xmlSpace="preserve"
     >
       <g>
         <polyline
           fill="none"
           stroke="#FFFFFF"
-          stroke-width="2"
-          stroke-linejoin="bevel"
-          stroke-miterlimit="10"
+          strokeWidth="2"
+          strokeLinejoin="bevel"
+          strokeMiterlimit="10"
           points="27,15 44,32 
        27,49 	"
         />
@@ -656,8 +656,8 @@ export const IconPlay1 = () => {
         <circle cx="22" cy="21" r="18" fill="#FEFFFF"></circle>
       </g>
       <path
-        fill-rule="evenodd"
-        clip-rule="evenodd"
+        fillRule="evenodd"
+        clipRule="evenodd"
         d="M18.8449 13.5557C18.1011 13.14 17.7292 12.9322 17.4248 12.9672C17.1591 12.9977 16.9187 13.1388 16.7624 13.3558C16.5833 13.6045 16.5833 14.0305 16.5833 14.8825V27.1179C16.5833 27.9698 16.5833 28.3958 16.7624 28.6445C16.9186 28.8615 17.1591 29.0026 17.4247 29.0331C17.7292 29.0681 18.101 28.8604 18.8447 28.4448L29.7922 22.3277C30.568 21.8942 30.9559 21.6775 31.0849 21.3922C31.1973 21.1434 31.1973 20.8584 31.0849 20.6096C30.956 20.3243 30.5681 20.1076 29.7923 19.674L18.8449 13.5557Z"
         fill="#141414"
       ></path>
@@ -669,7 +669,7 @@ export const IconPlay1 = () => {
           width="44"
           height="44"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
           <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
           <feColorMatrix

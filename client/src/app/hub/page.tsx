@@ -22,17 +22,17 @@ export default function Home() {
     {
       id: "test",
       desc: "Ngày lễ hoàn hảo để tận hưởng cái ôm từ ai đó",
-      imgUrl: "/clubday_9502.JPG",
+      imgUrl: "/next.svg",
     },
     {
       id: "test2",
       desc: "Ngày lễ hoàn hảo để tận hưởng cái ôm từ ai đó",
-      imgUrl: "/clubday_9502.JPG",
+      imgUrl: "/next.svg",
     },
     {
       id: "test3",
       desc: "Ngày lễ hoàn hảo để tận hưởng cái ôm từ ai đó",
-      imgUrl: "/clubday_9502.JPG",
+      imgUrl: "/next.svg",
     },
   ];
   const themes = [
