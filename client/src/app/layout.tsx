@@ -4,6 +4,7 @@ import "../../public/globals.css";
 import Sidebar from "@/components/sidebar";
 import Header from "@/components/header";
 import AudioPlayer from "@/components/audio/AudioPlayer";
+import AuthWatcher from "@/components/authwatcher";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <AuthWatcher />
       <body className={inter.className}>
         <main className="h-screen flex bg-[#170f23]">
           <Sidebar />

@@ -8,13 +8,10 @@ import Link from "next/link";
 import { useState } from "react";
 import Login from "../login";
 import Signup from "../signup";
+import useAuthStore from "@/stores/authStore";
 
 const Header = () => {
-  const [isLogin, setIsLogin] = useState(
-    typeof window !== "undefined" && localStorage.getItem("token ")
-      ? true
-      : false
-  );
+  const { authorized } = useAuthStore();
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [openSignupModal, setOpenSignupModal] = useState(false);
   const [clickedAccount, setClickedAccount] = useState(false);
@@ -85,7 +82,7 @@ const Header = () => {
               !clickedAccount && "hidden"
             } absolute flex flex-col justify-between right-16 z-10 mt-2 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
           >
-            {isLogin ? (
+            {authorized ? (
               <div>
                 {headerAccountItem.map((item, index) => (
                   <div key={index} className="flex items-center">
