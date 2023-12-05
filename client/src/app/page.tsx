@@ -31,13 +31,13 @@ export default function Home() {
 
   const getSongs = async () => {
     const res = await getNewestSongs();
-    setNewestSongs(res.data);
+    setNewestSongs(res.data.newest_songs);
   };
 
   useEffect(() => {
-    getGenres;
-    getAlbums;
-    getSongs;
+    getGenres();
+    getAlbums();
+    getSongs();
   }, []);
 
   return (
@@ -62,7 +62,7 @@ export default function Home() {
                   style={{ position: "relative" }}
                 >
                   <Image
-                    src={song.image_file_path}
+                    src={"/" + song.image_file_path}
                     width={60}
                     height={60}
                     alt="Image"
@@ -95,7 +95,7 @@ export default function Home() {
                   style={{ position: "relative" }}
                 >
                   <Image
-                    src={song.image_file_path}
+                    src={"/" + song.image_file_path}
                     width={60}
                     height={60}
                     alt="Image"
@@ -140,7 +140,7 @@ export default function Home() {
                 style={{ position: "relative" }}
               >
                 <Image
-                  src={song.image_file_path}
+                  src={"/" + song.image_file_path}
                   width={60}
                   height={60}
                   alt="Image"
@@ -173,7 +173,7 @@ export default function Home() {
                 style={{ position: "relative" }}
               >
                 <Image
-                  src={song.image_file_path}
+                  src={"/" + song.image_file_path}
                   width={60}
                   height={60}
                   alt="Image"
@@ -218,7 +218,7 @@ export default function Home() {
               >
                 <div className="flex flex-col justify-center items-center hover:scale-110 transition-transform duration-300">
                   <Image
-                    src={item.image_file_path}
+                    src={"/" + item.image_file_path}
                     width={100}
                     height={100}
                     alt="Image"
@@ -231,6 +231,9 @@ export default function Home() {
                       <IconPlay />
                     </div>
                   )}
+                </div>
+                <div className="text-xs font-bold tracking-tight text-white opacity-50">
+                  {item.title}
                 </div>
               </div>
             ))}

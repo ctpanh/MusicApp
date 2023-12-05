@@ -12,6 +12,7 @@ export interface Song {
 export interface Album {
   id: number;
   artist: string;
+  title: string;
   genre_id: number;
   release_date: string;
   image_file_path: string;

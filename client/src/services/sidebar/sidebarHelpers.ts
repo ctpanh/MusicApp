@@ -41,6 +41,9 @@ export const sidebarItems = [
     IconComponent: IconTopic,
     link: "/hub",
   },
+];
+
+export const sidebarItemsLibrary = [
   {
     id: SelectedOptionSidebar.History,
     lable: "Nghe gần đây",
