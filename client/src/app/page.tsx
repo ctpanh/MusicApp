@@ -6,11 +6,14 @@ import {
   getNewestSongs,
 } from "@/services/discovery/discoveryApi";
 import { Album, Song } from "@/services/discovery/discoveryHelpers";
+import { getRecentlyHeardSongs } from "@/services/history/historyApi";
 import { getAllGenre } from "@/services/hub/hubApi";
 import { Genre } from "@/services/hub/hubHelpers";
 import useAuthStore from "@/stores/authStore";
+import { useUserStore } from "@/stores/userStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 const imageUrls = [
   "https://photo-zmp3.zmdcdn.me/banner/c/6/7/4/c674baf04c83b75e907353166f77bd5b.jpg",
@@ -24,7 +27,13 @@ export default function Home() {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [genre, setGenre] = useState<Genre[]>([]);
   const { authorized } = useAuthStore();
+  const { userID } = useUserStore();
+  const [recentlySongs, setRecentlySongs] = useState<Song[]>([]);
 
+  const getRecentlySongs = async () => {
+    const res = await getRecentlyHeardSongs(userID!);
+    setRecentlySongs(res.data);
+  };
   const getGenres = async () => {
     const res = await getAllGenre();
     setGenre(res.data);
@@ -44,6 +53,7 @@ export default function Home() {
     getGenres();
     getAlbums();
     getSongs();
+    getRecentlySongs();
   }, []);
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto">
@@ -63,14 +73,17 @@ export default function Home() {
         <div className="mt-[48px]">
           <div className="flex justify-between p-4  text-xl">
             <div className="text-header text-white">Gần đây</div>
-            <div className="flex items-center text-header text-white cursor-pointer hover:text-[#8d22c3]">
+            <Link
+              href={"/library/history"}
+              className="flex items-center text-header text-white cursor-pointer hover:text-[#8d22c3]"
+            >
               Xem thêm
               <IconGoRight />
-            </div>
+            </Link>
           </div>
           <div className="flex justify-center items-center px-4 gap-5">
             <div className="w-1/2 flex flex-col gap-4">
-              {newestSongs.slice(0, 4).map((song, index) => (
+              {recentlySongs.slice(0, 4).map((song, index) => (
                 <div
                   onMouseEnter={() => setHoveredButton(song.id)}
                   onMouseLeave={() => setHoveredButton(null)}
@@ -103,7 +116,7 @@ export default function Home() {
               ))}
             </div>
             <div className="w-1/2 flex flex-col gap-4">
-              {newestSongs.slice(4, 8).map((song, index) => (
+              {recentlySongs.slice(4, 8).map((song, index) => (
                 <div
                   onMouseEnter={() => setHoveredButton(song.id)}
                   onMouseLeave={() => setHoveredButton(null)}
@@ -141,10 +154,13 @@ export default function Home() {
       <div className="mt-[48px]">
         <div className="flex justify-between p-4  text-xl">
           <div className="text-header text-white">Mới phát hành</div>
-          <div className="flex items-center text-header text-white cursor-pointer hover:text-[#8d22c3]">
+          <Link
+            href={"/new-release"}
+            className="flex items-center text-header text-white cursor-pointer hover:text-[#8d22c3]"
+          >
             Xem thêm
             <IconGoRight />
-          </div>
+          </Link>
         </div>
         <div className="flex justify-center items-center px-4 gap-5">
           <div className="w-1/2 flex flex-col gap-4">
