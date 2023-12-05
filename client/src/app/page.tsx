@@ -12,6 +12,12 @@ import useAuthStore from "@/stores/authStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
+const imageUrls = [
+  "https://photo-zmp3.zmdcdn.me/banner/c/6/7/4/c674baf04c83b75e907353166f77bd5b.jpg",
+  "https://photo-zmp3.zmdcdn.me/banner/6/6/4/5/6645a50abde04b4501812379548d392f.jpg",
+  "https://photo-zmp3.zmdcdn.me/banner/c/c/6/6/cc66fbb2d8dfc12e2210239ed9a6a448.jpg",
+];
+
 export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [newestSongs, setNewestSongs] = useState<Song[]>([]);
@@ -39,9 +45,20 @@ export default function Home() {
     getAlbums();
     getSongs();
   }, []);
-
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto">
+      <div className="flex w-full justify-center gap-10 transition-transform duration-500">
+        {imageUrls.map((url, index) => (
+          <div key={index} className="flex-shrink-0">
+            <Image
+              src={url}
+              alt={`carousel-item-${index}`}
+              width={400}
+              height={100}
+            />
+          </div>
+        ))}
+      </div>
       {authorized && (
         <div className="mt-[48px]">
           <div className="flex justify-between p-4  text-xl">
