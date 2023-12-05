@@ -22,11 +22,20 @@ export default function RootLayout({
     <html lang="en">
       <AuthWatcher />
       <body className={inter.className}>
-        <main className="h-screen flex bg-[#170f23]">
-          <Sidebar />
-          <div className="w-full h-full">
-            <Header />
-            {children}
+        <main className="h-screen flex flex-col justify-between bg-[#170f23]">
+          <div className="h-[calc(100%_-_84px)] flex">
+            <Sidebar />
+            <div className="w-full h-full">
+              <Header />
+              {children}
+            </div>
+          </div>
+          <div className="h-[84px]">
+            <AudioPlayer
+              audioSource={
+                "https://vnso-zn-23-tf-a320-zmp3.zmdcdn.me/a5e0debc57e4d8a6fd251b8835df717a?authen=exp=1701971212~acl=/a5e0debc57e4d8a6fd251b8835df717a/*~hmac=353a1aff8eb71658a72f7463d78cbae5"
+              }
+            />
           </div>
         </main>
       </body>

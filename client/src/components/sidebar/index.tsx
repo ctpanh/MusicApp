@@ -67,10 +67,10 @@ const Sidebar = () => {
             </Link>
           ))}
       </div>
-      <div className="fixed w-[240px] h-[70px] bottom-0 flex items-center border-t px-6 bottom-0 cursor-pointer">
+      {/* <div className="fixed w-[240px] h-[70px] bottom-0 flex items-center border-t px-6 bottom-0 cursor-pointer">
         <IconAdd />
         <div className="text-white font-medium">Tạo playlist mới</div>
-      </div>
+      </div> */}
     </div>
   );
 };
