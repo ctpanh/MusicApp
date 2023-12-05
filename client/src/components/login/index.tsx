@@ -1,8 +1,9 @@
 import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { ExclamationTriangleIcon } from "@heroicons/react/24/outline";
 import { NextPage } from "next";
-import Signup from "../signup";
+import useAuthStore from "@/stores/authStore";
+import { login } from "@/services/user/userApi";
+import { useUserStore } from "@/stores/userStore";
 interface Props {
   openLoginModal: boolean;
   setOpenLoginModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,8 +19,26 @@ const Login: NextPage<Props> = (props) => {
     setOpenSignupModal,
   } = props;
 
+  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
   const cancelButtonRef = useRef(null);
+  const token = useAuthStore((state) => state.token);
 
+  const handleLogin = async () => {
+    setOpenLoginModal(false);
+    if (email && password) {
+      const res = await login({
+        email: email,
+        password: password,
+      });
+      useAuthStore.getState().setToken(res.data.jwtToken);
+      useAuthStore.getState().setAuthorized(true);
+      const newUser = res.data.user;
+      localStorage.setItem("user", JSON.stringify(newUser));
+      useUserStore.getState().setUser(newUser);
+      localStorage.setItem("accessToken ", res.data.jwtToken);
+    }
+  };
   return (
     <Transition.Root show={openLoginModal} as={Fragment}>
       <Dialog
@@ -64,20 +83,36 @@ const Login: NextPage<Props> = (props) => {
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
                           <label htmlFor="name">Email: </label>
-                          <input id="name" type="text" className="border" />
+                          <input
+                            id="name"
+                            type="text"
+                            value={email}
+                            onChange={(event) => {
+                              setEmail(event.target.value);
+                            }}
+                            className="border"
+                          />
                         </p>
                       </div>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                          <label htmlFor="name">Mật khẩu: </label>
-                          <input id="password" type="password" className="border" />
+                          <label htmlFor="password">Mật khẩu: </label>
+                          <input
+                            id="password"
+                            type="password"
+                            value={password}
+                            onChange={(event) => {
+                              setPassword(event.target.value);
+                            }}
+                            className="border"
+                          />
                         </p>
                       </div>
                       <div className="mt-2">
                         <p className="text-sm text-gray-500">
                           Chưa có tài khoản?{" "}
                           <span
-                          className="text-[#8d22c3] cursor-pointer"
+                            className="text-[#8d22c3] cursor-pointer"
                             onClick={() => {
                               setOpenLoginModal(false);
                               setOpenSignupModal(true);
@@ -95,7 +130,7 @@ const Login: NextPage<Props> = (props) => {
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-[#8d22c3] px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={() => setOpenLoginModal(false)}
+                    onClick={handleLogin}
                   >
                     Đăng nhập
                   </button>

@@ -125,9 +125,7 @@ class UserController:
         access_token = createAccessToken(data={"sub": user.email})
 
         response = {
-            "id": user.id,
-            "name": user.name,
-            "email": user.email,
+            "user": user,
             "jwtToken": access_token,
         }
         return response

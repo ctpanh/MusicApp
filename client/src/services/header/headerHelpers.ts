@@ -20,7 +20,7 @@ export const headerAccountItem = [
     id: AccountItem.Logout,
     label: "Đăng xuất",
     IconComponent: IconLogout,
-    link: "/",
+    link: "/logout",
   },
 ];
 export const headeSettingItem = [
