@@ -1,6 +1,6 @@
 "use client";
 import { IconGoRight, IconPlay } from "@/assets/icons";
-import { getAllAlbums } from "@/services/discovery/discoveryApi";
+import { getAllAlbums } from "@/services/album/albumApi";
 import { Album } from "@/services/discovery/discoveryHelpers";
 import { getAllGenre } from "@/services/hub/hubApi";
 import { Genre } from "@/services/hub/hubHelpers";
@@ -95,9 +95,12 @@ export default function Home() {
                     }`}
                   />
                   {hoveredButton === item.id && (
-                    <div className="absolute px-4 text-white cursor-pointer">
+                    <Link
+                      href={`/album/${item.id}`}
+                      className="absolute px-4 text-white cursor-pointer"
+                    >
                       <IconPlay />
-                    </div>
+                    </Link>
                   )}
                 </div>
                 <div className="text-xs font-bold tracking-tight text-white opacity-50">

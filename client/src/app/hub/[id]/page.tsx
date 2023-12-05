@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Genre } from "@/services/hub/hubHelpers";
 import { getGenreById } from "@/services/hub/hubApi";
+import Link from "next/link";
 
 export default function Home() {
   const params = useParams();
@@ -61,9 +62,12 @@ export default function Home() {
                   }`}
                 />
                 {hoveredButton === item.id && (
-                  <div className="absolute px-4 text-white cursor-pointer">
+                  <Link
+                    href={`/album/${item.id}`}
+                    className="absolute px-4 text-white cursor-pointer"
+                  >
                     <IconPlay />
-                  </div>
+                  </Link>
                 )}
               </div>
               <div className="text-xs font-bold tracking-tight text-white opacity-50">
