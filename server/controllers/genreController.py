@@ -10,7 +10,6 @@ class GenreController:
     @staticmethod
     def createGenre(genre: GenreCreate, db: Session):
         newGenre = GenreModel(
-            # user_id = request.user_id,
             name=genre.name,
         )
         db.add(newGenre)
@@ -18,6 +17,9 @@ class GenreController:
         db.refresh(newGenre)
         return newGenre
     
+    def getAllGenre(db: Session = Depends(getDatabase)):
+        return db.query(GenreModel).all()
+
     def getGenreById(GenreId: int, db: Session = Depends(getDatabase)):
         return db.query(GenreModel).filter(GenreModel.id == GenreId).first()
 

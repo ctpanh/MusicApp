@@ -30,7 +30,7 @@ class AlbumController:
             release_date=album.release_date,
             artist=album.artist,
             genre_id=album.genre_id,
-            
+            image_file_path=album.image_file_path
         )
         db.add(new_Album)
         db.commit()

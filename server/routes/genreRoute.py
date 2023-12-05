@@ -15,9 +15,9 @@ router = APIRouter(
 def createGenre(genre: GenreCreate, db: Session = Depends(getDatabase)):
     return GenreController.createGenre(genre=genre, db=db)
 
-# @router.get("/all")
-# def get_all_Genre(db: Session = Depends(getDatabase)):
-#     return GenreController.getAllGenre(db=db)
+@router.get("/all")
+def get_all_Genre(db: Session = Depends(getDatabase)):
+    return GenreController.getAllGenre(db=db)
 
 
 @router.get("/{GenreId}")

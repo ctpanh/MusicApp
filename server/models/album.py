@@ -24,6 +24,8 @@ class AlbumModel(Base):
     release_date = Column(DateTime)
     artist = Column(String(100))
     genre_id = Column(Integer, ForeignKey("Genres.id"))
+    image_file_path = Column(String(255))
+
 
     # Relationships
     genre = relationship("GenreModel", back_populates="albums")

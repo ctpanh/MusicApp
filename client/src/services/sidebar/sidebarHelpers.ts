@@ -42,18 +42,6 @@ export const sidebarItems = [
     link: "/hub",
   },
   {
-    id: SelectedOptionSidebar.Top100,
-    lable: "Top 100",
-    IconComponent: IconTop100,
-    link: "/top100",
-  },
-  {
-    id: SelectedOptionSidebar.Library,
-    lable: "Thư viện",
-    IconComponent: IconLibrary,
-    link: "/library",
-  },
-  {
     id: SelectedOptionSidebar.History,
     lable: "Nghe gần đây",
     IconComponent: IconRecently,

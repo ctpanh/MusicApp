@@ -5,7 +5,7 @@ from typing import Optional
 
 class AlbumCreate(BaseModel):
     title: str
-    
+    image_file_path: str
     release_date: datetime
     artist: str
     genre_id: int
