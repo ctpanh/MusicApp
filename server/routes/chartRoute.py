@@ -5,10 +5,11 @@ from models.song import SongModel
 
 router = APIRouter(
     tags=["Chart"],
+    prefix="/chart",
     responses={404: {"description": "Not found"}},
 )
 
-@router.get("/chart/rank")
+@router.get("/rank")
 def rank_songs_by_views(db: Session = Depends(getDatabase)):
     # Retrieve songs ranked by views in descending order
     ranked_songs = db.query(SongModel).order_by(SongModel.views.desc()).all()

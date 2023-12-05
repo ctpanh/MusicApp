@@ -7,29 +7,30 @@ from models.song import SongModel
 
 router = APIRouter(
     tags=["Song"],
+    prefix="/song",
     responses={404: {"description": "Not found"}},
 )
 
-@router.post("/song/create")
+@router.post("/create")
 def createSong(song: SongCreate, db: Session = Depends(getDatabase)):
     return SongController.createSong(song=song, db=db)
 
-@router.get("/song/all")
+@router.get("/all")
 def get_all_Song(db: Session = Depends(getDatabase)):
     return SongController.getAllSong(db=db)
 
 
-@router.get("/song/{songId}")
+@router.get("/{songId}")
 def get_Song_by_id(songId: int, db: Session = Depends(getDatabase)):
     return SongController.getSongById(songId=songId, db=db)
 
 
-@router.put("/Song/update/{SongId}")
+@router.put("/update/{SongId}")
 def update_Song(SongId: int, Song: SongUpdate, db: Session = Depends(getDatabase)):
     return SongController.updateSong(SongId=SongId, Song=Song, db=db)
 
 
-@router.delete("/song/delete/{songId}")
+@router.delete("/delete/{songId}")
 def delete_Song(
     songId: int, db: Session = Depends(getDatabase)
 ):

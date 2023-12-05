@@ -7,19 +7,20 @@ from models.genre import GenreModel
 
 router = APIRouter(
     tags=["Genre"],
+    prefix="/genre",
     responses={404: {"description": "Not found"}},
 )
 
-@router.post("/Genre/create")
+@router.post("/create")
 def createGenre(genre: GenreCreate, db: Session = Depends(getDatabase)):
     return GenreController.createGenre(genre=genre, db=db)
 
-# @router.get("/Genre/all")
+# @router.get("/all")
 # def get_all_Genre(db: Session = Depends(getDatabase)):
 #     return GenreController.getAllGenre(db=db)
 
 
-@router.get("/Genre/{GenreId}")
+@router.get("/{GenreId}")
 def get_Genre_by_id(GenreId: int, db: Session = Depends(getDatabase)):
     return GenreController.getGenreById(GenreId=GenreId, db=db)
 
@@ -29,7 +30,7 @@ def get_Genre_by_id(GenreId: int, db: Session = Depends(getDatabase)):
 #     return GenreController.updateGenre(GenreId=GenreId, Genre=Genre, db=db)
 
 
-@router.delete("/Genre/delete/{GenreId}")
+@router.delete("/delete/{GenreId}")
 def delete_Genre(
     GenreId: int, db: Session = Depends(getDatabase)
 ):

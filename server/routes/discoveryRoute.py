@@ -7,10 +7,11 @@ from models.album import AlbumModel  # Adjust the import based on your actual mo
 
 router = APIRouter(
     tags=["Discovery"],
+    prefix="/discovery",
     responses={404: {"description": "Not found"}},
 )
 
-@router.get("discovery/newest-songs")
+@router.get("/newest-songs")
 def get_newest_songs(db: Session = Depends(getDatabase)):
     try:
         # Query the database to get the 12 newest songs
@@ -44,7 +45,7 @@ def get_newest_songs(db: Session = Depends(getDatabase)):
         # Handle exceptions appropriately
         raise HTTPException(status_code=500, detail=str(e))
 
-@router.get("/discovery/albumByGenre/{genre_id}")
+@router.get("/albumByGenre/{genre_id}")
 def list_albums_by_genre(genre_id: int, db: Session = Depends(getDatabase)):
     # Retrieve the genre by name
     genre = db.query(GenreModel).filter(GenreModel.id == genre_id).first()

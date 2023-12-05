@@ -8,14 +8,15 @@ from controllers.historyController import HistoryController
 
 router = APIRouter(
     tags=["History"],
+    prefix="/history",
     responses={404: {"description": "Not found"}},
 )
 
-@router.get("/history/create_heard_songs/{user_id}")
+@router.get("/create_heard_songs/{user_id}")
 def createHeardSong(history: HistoryCreate, db: Session = Depends(getDatabase)):
     return HistoryController.createGenre(history=history, db=db)
 
-@router.get("history/recently-heard-songs/{user_id}")
+@router.get("/recently-heard-songs/{user_id}")
 def get_recently_heard_songs(user_id: int, db: Session = Depends(getDatabase)):
     recently_heard_songs = (
         db.query(SongModel)
