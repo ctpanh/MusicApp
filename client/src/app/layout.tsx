@@ -31,11 +31,7 @@ export default function RootLayout({
             </div>
           </div>
           <div className="h-[84px]">
-            <AudioPlayer
-              audioSource={
-                "https://vnso-zn-23-tf-a320-zmp3.zmdcdn.me/a5e0debc57e4d8a6fd251b8835df717a?authen=exp=1701971212~acl=/a5e0debc57e4d8a6fd251b8835df717a/*~hmac=353a1aff8eb71658a72f7463d78cbae5"
-              }
-            />
+            <AudioPlayer />
           </div>
         </main>
       </body>

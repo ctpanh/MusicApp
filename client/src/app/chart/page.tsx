@@ -2,12 +2,14 @@
 import { IconHeart, IconPlay1 } from "@/assets/icons";
 import { getRankSongs } from "@/services/chart/chartApi";
 import { SongChart } from "@/services/chart/chartHelpers";
+import { useSongStore } from "@/stores/songStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
 export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [songs, setSongs] = useState<SongChart[]>([]);
+  const { setSong } = useSongStore();
 
   const getSongs = async () => {
     const res = await getRankSongs();
@@ -63,7 +65,10 @@ export default function Home() {
                 <div className="font-light opacity-50">{item.artist}</div>
               </div>
               {hoveredButton === item.id && (
-                <div className="absolute px-4 text-white cursor-pointer">
+                <div
+                  className="absolute px-4 text-white cursor-pointer"
+                  onClick={() => setSong(item)}
+                >
                   <IconPlay1 />
                 </div>
               )}

@@ -12,11 +12,7 @@ import { MdSkipPrevious, MdSkipNext } from "react-icons/md";
 
 import Image from "next/image";
 
-interface AudioPlayerProps {
-  audioSource: string;
-}
-
-const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSource }) => {
+const AudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement>(null);
   const {
     song,
@@ -92,7 +88,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSource }) => {
       artist: "string",
       audio_file_path:
         "https://vnso-zn-23-tf-a320-zmp3.zmdcdn.me/a5e0debc57e4d8a6fd251b8835df717a?authen=exp=1701971212~acl=/a5e0debc57e4d8a6fd251b8835df717a/*~hmac=353a1aff8eb71658a72f7463d78cbae5",
-      image_file_path: "/next.svg",
+      image_file_path: "next.svg",
       release_date: "2023/11/2",
       views: 0,
     };
@@ -107,7 +103,7 @@ const AudioPlayer: React.FC<AudioPlayerProps> = ({ audioSource }) => {
         <div className="w-[60px] h-[60px] flex items-center">
           {song && (
             <Image
-              src={song.image_file_path}
+              src={"/" + song.image_file_path}
               width={60}
               height={60}
               alt="Image"

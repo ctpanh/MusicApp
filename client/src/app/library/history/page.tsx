@@ -2,6 +2,7 @@
 import { IconHeart, IconPlay1 } from "@/assets/icons";
 import { Song } from "@/services/discovery/discoveryHelpers";
 import { getRecentlyHeardSongs } from "@/services/history/historyApi";
+import { useSongStore } from "@/stores/songStore";
 import { useUserStore } from "@/stores/userStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -10,6 +11,7 @@ export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [songs, setSongs] = useState<Song[]>([]);
   const { userID } = useUserStore();
+  const { setSong } = useSongStore();
 
   const getSongs = async () => {
     const res = await getRecentlyHeardSongs(userID!);
@@ -49,7 +51,10 @@ export default function Home() {
                 <div className="font-light opacity-50">{item.artist}</div>
               </div>
               {hoveredButton === item.id && (
-                <div className="absolute px-4 text-white cursor-pointer">
+                <div
+                  className="absolute px-4 text-white cursor-pointer"
+                  onClick={() => setSong(item)}
+                >
                   <IconPlay1 />
                 </div>
               )}

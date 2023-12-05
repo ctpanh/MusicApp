@@ -14,6 +14,7 @@ import { useUserStore } from "@/stores/userStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSongStore } from "@/stores/songStore";
 
 const imageUrls = [
   "https://photo-zmp3.zmdcdn.me/banner/c/6/7/4/c674baf04c83b75e907353166f77bd5b.jpg",
@@ -28,6 +29,7 @@ export default function Home() {
   const [genre, setGenre] = useState<Genre[]>([]);
   const { authorized } = useAuthStore();
   const { userID } = useUserStore();
+  const { setSong } = useSongStore();
   const [recentlySongs, setRecentlySongs] = useState<Song[]>([]);
 
   const getRecentlySongs = async () => {
@@ -108,7 +110,10 @@ export default function Home() {
                     </div>
                   </div>
                   {hoveredButton === song.id && (
-                    <div className="absolute px-4 text-white cursor-pointer">
+                    <div
+                      className="absolute px-4 text-white cursor-pointer"
+                      onClick={() => setSong(song)}
+                    >
                       <IconPlay />
                     </div>
                   )}
@@ -141,7 +146,10 @@ export default function Home() {
                     </div>
                   </div>
                   {hoveredButton === song.id && (
-                    <div className="absolute px-4 text-white cursor-pointer">
+                    <div
+                      className="absolute px-4 text-white cursor-pointer"
+                      onClick={() => setSong(song)}
+                    >
                       <IconPlay />
                     </div>
                   )}
@@ -189,7 +197,10 @@ export default function Home() {
                   </div>
                 </div>
                 {hoveredButton === song.id && (
-                  <div className="absolute px-4 text-white cursor-pointer">
+                  <div
+                    className="absolute px-4 text-white cursor-pointer"
+                    onClick={() => setSong(song)}
+                  >
                     <IconPlay />
                   </div>
                 )}
@@ -222,7 +233,10 @@ export default function Home() {
                   </div>
                 </div>
                 {hoveredButton === song.id && (
-                  <div className="absolute px-4 text-white cursor-pointer">
+                  <div
+                    className="absolute px-4 text-white cursor-pointer"
+                    onClick={() => setSong(song)}
+                  >
                     <IconPlay />
                   </div>
                 )}
