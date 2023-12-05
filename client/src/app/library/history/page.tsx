@@ -22,9 +22,6 @@ export default function Home() {
     <div className="w-full h-[calc(100%_-_84px)] overflow-auto p-10">
       <div className="w-full flex items-center gap-3 mb-8 capitalize text-4xl text-white font-bold">
         Phát gần đây
-        <div className="cursor-pointer">
-          <IconPlay1 />
-        </div>
       </div>
       {songs.map((item, index) => (
         <button

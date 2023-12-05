@@ -14,7 +14,7 @@ export const headerAccountItem = [
     id: AccountItem.Upload,
     label: "Tải lên",
     IconComponent: IconUpload1,
-    link: "/upload",
+    link: "/library/upload",
   },
   {
     id: AccountItem.Logout,
