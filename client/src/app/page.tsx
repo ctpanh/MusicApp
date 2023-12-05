@@ -1,7 +1,6 @@
 "use client";
 import { IconGoRight, IconPlay } from "@/assets/icons";
 import {
-  getAllAlbums,
   getListAlbumsByGenre,
   getNewestSongs,
 } from "@/services/discovery/discoveryApi";
@@ -15,6 +14,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSongStore } from "@/stores/songStore";
+import { getAllAlbums } from "@/services/album/albumApi";
 
 const imageUrls = [
   "https://photo-zmp3.zmdcdn.me/banner/c/6/7/4/c674baf04c83b75e907353166f77bd5b.jpg",
@@ -277,9 +277,12 @@ export default function Home() {
                     }`}
                   />
                   {hoveredButton === item.id && (
-                    <div className="absolute px-4 text-white cursor-pointer">
+                    <Link
+                      href={`/album/${item.id}`}
+                      className="absolute px-4 text-white cursor-pointer"
+                    >
                       <IconPlay />
-                    </div>
+                    </Link>
                   )}
                 </div>
                 <div className="text-xs font-bold tracking-tight text-white opacity-50">
