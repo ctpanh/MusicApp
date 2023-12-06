@@ -20,7 +20,7 @@ from models.genre import GenreModel
 class AlbumModel(Base):
     __tablename__ = "Albums"
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(100))
+    title = Column(String(100), unique=True)
     release_date = Column(DateTime)
     artist = Column(String(100))
     genre_id = Column(Integer, ForeignKey("Genres.id"))

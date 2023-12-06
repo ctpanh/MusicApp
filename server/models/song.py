@@ -8,7 +8,7 @@ from models.album import AlbumModel
 class SongModel(Base):
     __tablename__ = "Songs"
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(100))
+    title = Column(String(100), unique=True)
     artist = Column(String(100))
     audio_file_path = Column(String(255))
     image_file_path = Column(String(255))
