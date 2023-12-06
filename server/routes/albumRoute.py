@@ -22,14 +22,18 @@ def get_all_Album(db: Session = Depends(getDatabase)):
     return AlbumController.getAllAlbum(db=db)
 
 
-@router.get("/{AlbumId}")
+@router.get("/get/{AlbumId}")
 def get_Album_by_id(AlbumId: int, db: Session = Depends(getDatabase)):
     return AlbumController.getAlbumById(AlbumId=AlbumId, db=db)
 
 
+@router.get("/featured-album")
+def get_feature_album(db: Session = Depends(getDatabase)):
+    return AlbumController.getFeatureAlbums(db=db)
+
 # @router.put("/update/{AlbumId}")
 # def update_Album(AlbumId: int, Album: UpdateAlbum, db: Session = Depends(getDatabase)):
-#     return AlbumController.updateAlbum(AlbumId=AlbumId, Album=Album, db=db)
+#     return AlbumController.updateAlbum(Albumd=AlbumId, Album=Album, db=db)
 
 
 @router.delete("/delete/{AlbumId}")
