@@ -1,9 +1,13 @@
 from fastapi import Depends, HTTPException
+from sqlalchemy import AliasedReturnsRows, func
 from models.user import UserModel
 from models.album import AlbumModel
 from schemas.albumSchema import AlbumCreate
 from database import getDatabase
 from sqlalchemy.orm import Session
+
+from models.song import SongModel
+from sqlalchemy.orm import aliased
 
 
 class AlbumController:
@@ -60,3 +64,70 @@ class AlbumController:
         db.commit()
         return {"msg": "Deleted"}
     
+    def getFeatureAlbums(db: Session):
+        album_alias = aliased(AlbumModel)
+
+        # Subquery to get the top 3 albums by views
+        top_album_subquery = (
+            db.query(
+                AlbumModel.id,
+                func.sum(SongModel.views).label("total_views")
+            )
+            .join(SongModel, AlbumModel.id == SongModel.album_id)
+            .group_by(AlbumModel.id)
+            .order_by(func.sum(SongModel.views).desc())
+            .limit(3)
+            .subquery()
+        )
+
+        # Main query to get details of top 3 albums and their songs
+        ranked_albums_and_songs = (
+            db.query(
+                AlbumModel.id,
+                AlbumModel.title,
+                SongModel.id.label("song_id"),
+                SongModel.title.label("song_title"),
+                SongModel.artist,
+                SongModel.audio_file_path,
+                SongModel.image_file_path,
+                SongModel.release_date,
+                SongModel.views
+            )
+            .join(SongModel, AlbumModel.id == SongModel.album_id)
+            .join(top_album_subquery, AlbumModel.id == top_album_subquery.c.id)
+            .order_by(top_album_subquery.c.total_views.desc(), SongModel.views.desc())
+            .all()
+        )
+
+        # Create a dictionary to store the results
+        result = {}
+
+        # Iterate through ranked albums and songs
+        for album_id, album_title, song_id, song_title, artist, audio_file_path, image_file_path, release_date, views in ranked_albums_and_songs:
+            # Add album information to the result dictionary if not already present
+            if album_id not in result:
+                result[album_id] = {
+                    "album_id": album_id,
+                    "album_title": album_title,
+                    "total_views": 0,
+                    "songs": []
+                }
+
+            # Add song information to the album's list of songs
+            song_info = {
+                "song_id": song_id,
+                "song_title": song_title,
+                "artist": artist,
+                "audio_file_path": audio_file_path,
+                "image_file_path": image_file_path,
+                "release_date": release_date,
+                "views": views,
+            }
+
+            result[album_id]["songs"].append(song_info)
+            result[album_id]["total_views"] += views
+
+        # Convert the result dictionary to a list
+        final_result = list(result.values())
+
+        return final_result
