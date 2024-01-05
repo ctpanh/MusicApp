@@ -5,7 +5,7 @@ from database import Base
 class SongModel(Base):
     __tablename__ = "Songs"
     id = Column(Integer, primary_key=True, index=True)
-    code = Column(String, unique=True)
+    code = Column(String(20), unique=True)
     title = Column(String(100))
     artist = Column(String(100))
     audio_file_path = Column(String(255))

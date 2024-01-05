@@ -5,7 +5,7 @@ from database import Base
 class AlbumModel(Base):
     __tablename__ = "Albums"
     id = Column(Integer, primary_key=True, index=True)
-    code = Column(String, unique=True)
+    code = Column(String(20), unique=True)
     title = Column(String(100))
     release_date = Column(DateTime)
     artist = Column(String(100))
