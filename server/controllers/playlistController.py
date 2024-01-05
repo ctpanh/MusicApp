@@ -7,36 +7,30 @@ from sqlalchemy.orm import Session
 
 
 class PlaylistController:
-    @staticmethod
-    # def createPlaylist(Playlist: PlaylistCreate, db: Session):
-    #     newPlaylist = PlaylistModel(
-    #         # user_id = request.user_id,
-    #         title = Playlist.title,
-    #         artist = Playlist.artist,
-    #         audio_file_path = Playlist.audio_file_path,
-    #         image_file_path = Playlist.image_file_path,
-    #         album_id = Playlist.album_id,
-    #         playlist_id = Playlist.playlist_id,
-    #         release_date = Playlist.release_date,
-    #         views = Playlist.views
-    #     )
-    #     db.add(newPlaylist)
-    #     db.commit()
-    #     db.refresh(newPlaylist)
-    #     return newPlaylist
     def createPlaylist(playlist: PlaylistCreate, db: Session = Depends(getDatabase)):
         db_playlist = (
             db.query(PlaylistModel).filter(PlaylistModel.code == playlist.code).first()
         )
         if not db_playlist:
-            db_playlist = PlaylistModel(
-                code=playlist.code,
-                name=playlist.name,
-                user_id=playlist.user_id,
-            )
-            db.add(db_playlist)
-            db.commit()
-            db.refresh(db_playlist)
+            if playlist.user_id is not None:
+                db_playlist = PlaylistModel(
+                    code=playlist.code,
+                    name=playlist.name,
+                    user_id=playlist.user_id,
+                    image_file_path=playlist.image_file_path,
+                )
+                db.add(db_playlist)
+                db.commit()
+                db.refresh(db_playlist)
+            else:
+                db_playlist = PlaylistModel(
+                    code=playlist.code,
+                    name=playlist.name,
+                    image_file_path=playlist.image_file_path,
+                )
+                db.add(db_playlist)
+                db.commit()
+                db.refresh(db_playlist)
         return db_playlist
 
     def getPlaylistById(playlistId: int, db: Session = Depends(getDatabase)):

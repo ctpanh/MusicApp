@@ -7,4 +7,5 @@ class PlaylistModel(Base):
     id = Column(Integer, primary_key=True, index=True)
     code = Column(String(20), unique=True)
     name = Column(String(100))
-    user_id = Column(Integer, ForeignKey("Users.id"))
+    user_id = Column(Integer, ForeignKey("Users.id"), nullable=True)
+    image_file_path = Column(String(255))
