@@ -25,22 +25,26 @@ class PlaylistController:
     #     db.refresh(newPlaylist)
     #     return newPlaylist
     def createPlaylist(playlist: PlaylistCreate, db: Session = Depends(getDatabase)):
-        new_Playlist = PlaylistModel(
-            name=playlist.name,
-            user_id=playlist.user_id,
-           
+        db_playlist = (
+            db.query(PlaylistModel).filter(PlaylistModel.code == playlist.code).first()
         )
-        db.add(new_Playlist)
-        db.commit()
-        db.refresh(new_Playlist)
-        return new_Playlist
-    
-    
+        if not db_playlist:
+            db_playlist = PlaylistModel(
+                code=playlist.code,
+                name=playlist.name,
+                user_id=playlist.user_id,
+            )
+            db.add(db_playlist)
+            db.commit()
+            db.refresh(db_playlist)
+        return db_playlist
+
     def getPlaylistById(playlistId: int, db: Session = Depends(getDatabase)):
         return db.query(PlaylistModel).filter(PlaylistModel.id == playlistId).first()
 
     def getAllPlaylist(db: Session = Depends(getDatabase)):
         return db.query(PlaylistModel).all()
+
     # def updatePlaylist(PlaylistId: int, Playlist: PlaylistUpdate, db: Session):
     #     dbPlaylistId = db.query(PlaylistModel).filter(PlaylistModel.id == PlaylistId).first()
 
@@ -51,10 +55,11 @@ class PlaylistController:
 
     #     db.commit()
     #     return {"msg": "Updated"}
-    
+
     def deletePlaylist(playlistId: int, db: Session):
-        dbPlaylistId = db.query(PlaylistModel).filter(PlaylistModel.id == playlistId).first()
+        dbPlaylistId = (
+            db.query(PlaylistModel).filter(PlaylistModel.id == playlistId).first()
+        )
         db.delete(dbPlaylistId)
         db.commit()
         return {"msg": "Deleted"}
-    

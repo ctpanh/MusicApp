@@ -42,15 +42,15 @@ app.add_middleware(
 def ping():
     return "pong"
 
-@app.post("/save-data")
-async def save_data(data: dict, db: Session = Depends(getDatabase)):
-    try:
-        # Save the data to the database
-        print(data)
-        saved_song = save_data(db, data)
-        return {"message": "Music track saved successfully", "saved_song_id": saved_song.id}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error saving data: {str(e)}")
+# @app.post("/save-data")
+# async def save_data(data: dict, db: Session = Depends(getDatabase)):
+#     try:
+#         # Save the data to the database
+#         print(data)
+#         saved_song = save_data(db, data)
+#         return {"message": "Music track saved successfully", "saved_song_id": saved_song.id}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Error saving data: {str(e)}")
 
     
 
@@ -58,11 +58,9 @@ async def save_data(data: dict, db: Session = Depends(getDatabase)):
 async def save_data(tracks: List[dict], db: Session = Depends(getDatabase)):
     try:
         for track in tracks:
-            # Save each track to the database
             saved_track = SongModel(
                 title=track.get('title'),
                 artist=track.get('artistsNames'),
-                # Add other fields accordingly
             )
             db.add(saved_track)
 

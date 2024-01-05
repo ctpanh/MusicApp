@@ -9,14 +9,17 @@ from sqlalchemy.orm import Session
 class GenreController:
     @staticmethod
     def createGenre(genre: GenreCreate, db: Session):
-        newGenre = GenreModel(
-            name=genre.name,
-        )
-        db.add(newGenre)
-        db.commit()
-        db.refresh(newGenre)
-        return newGenre
-    
+        db_genre = db.query(GenreModel).filter(GenreModel.code == genre.code).first()
+        if not db_genre:
+            db_genre = GenreModel(
+                code=genre.code,
+                name=genre.name,
+            )
+            db.add(db_genre)
+            db.commit()
+            db.refresh(db_genre)
+        return db_genre
+
     def getAllGenre(db: Session = Depends(getDatabase)):
         return db.query(GenreModel).all()
 
@@ -33,10 +36,9 @@ class GenreController:
 
         db.commit()
         return {"msg": "Updated"}
-    
+
     def deleteGenre(GenreId: int, db: Session):
         dbGenreId = db.query(GenreModel).filter(GenreModel.id == GenreId).first()
         db.delete(dbGenreId)
         db.commit()
         return {"msg": "Deleted"}
-    

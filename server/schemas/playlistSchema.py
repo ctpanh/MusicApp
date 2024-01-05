@@ -5,5 +5,5 @@ from typing import Optional
 
 class PlaylistCreate(BaseModel):
     name: str
+    code: str
     user_id: int
-

@@ -1,13 +1,11 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Float, DateTime, Text
-import database
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from database import Base
-from sqlalchemy.orm import relationship
-from models.album import AlbumModel 
 
 
 class SongModel(Base):
     __tablename__ = "Songs"
     id = Column(Integer, primary_key=True, index=True)
+    code = Column(String, unique=True)
     title = Column(String(100))
     artist = Column(String(100))
     audio_file_path = Column(String(255))
@@ -16,6 +14,3 @@ class SongModel(Base):
     playlist_id = Column(Integer, ForeignKey("Playlists.id"), nullable=True)
     release_date = Column(DateTime)
     views = Column(Integer, default=0)
-    # Relationships
-    album = relationship("AlbumModel", back_populates="songs")
-

@@ -4,6 +4,7 @@ from typing import Optional
 
 
 class SongCreate(BaseModel):
+    code: str
     title: str
     artist: str
     audio_file_path: str
@@ -12,6 +13,7 @@ class SongCreate(BaseModel):
     playlist_id: Optional[int] = None
     release_date: datetime
     views: int
+
 
 class SongUpdate(BaseModel):
     title: str
