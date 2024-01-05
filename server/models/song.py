@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
+from sqlalchemy import Column, ForeignKey, Integer, String, Date
 from database import Base
 
 
@@ -12,5 +12,5 @@ class SongModel(Base):
     image_file_path = Column(String(255))
     album_id = Column(Integer, ForeignKey("Albums.id"), nullable=True)
     playlist_id = Column(Integer, ForeignKey("Playlists.id"), nullable=True)
-    release_date = Column(DateTime)
+    release_date = Column(Date)
     views = Column(Integer, default=0)
