@@ -14,7 +14,6 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSongStore } from "@/stores/songStore";
-import { getAllAlbums } from "@/services/album/albumApi";
 import { getAllPlaylist } from "@/services/playlist/albumApi";
 
 const imageUrls = [

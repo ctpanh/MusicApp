@@ -1,6 +1,6 @@
 "use client";
 import { IconGoRight, IconPlay } from "@/assets/icons";
-import { getAllAlbums } from "@/services/album/albumApi";
+import { getListAlbumsByGenre } from "@/services/discovery/discoveryApi";
 import { Album } from "@/services/discovery/discoveryHelpers";
 import { getAllGenre } from "@/services/hub/hubApi";
 import { Genre } from "@/services/hub/hubHelpers";
@@ -10,60 +10,59 @@ import { useEffect, useState } from "react";
 
 export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
-  const [albums, setAlbums] = useState<Album[]>([]);
+  const [genresWithAlbums, setGenresWithAlbums] = useState<
+    { genre: Genre; album: Album[] }[]
+  >([]);
   const [genre, setGenre] = useState<Genre[]>([]);
   const getGenres = async () => {
     const res = await getAllGenre();
     setGenre(res.data);
   };
-
-  const getAlbums = async () => {
-    const res = await getAllAlbums();
-    setAlbums(res.data);
-  };
-  const highlights = [
-    {
-      id: 1,
-      imgUrl: "/vercel.svg",
-      title: "test1",
-    },
-    {
-      id: 2,
-      imgUrl: "/vercel.svg",
-      title: "test2",
-    },
-  ];
   useEffect(() => {
     getGenres();
-    getAlbums();
   }, []);
+
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      const genresWithAlbumsData: { genre: Genre; album: Album[] }[] = [];
+
+      for (const genreItem of genre) {
+        try {
+          const response = await getListAlbumsByGenre(genreItem.id);
+          const albumsData = response.data.slice(0, 6);
+
+          if (albumsData.length > 0) {
+            genresWithAlbumsData.push({
+              genre: genreItem,
+              album: albumsData,
+            });
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching albums for genre ${genreItem.id}: ${error}`
+          );
+        }
+      }
+
+      setGenresWithAlbums(genresWithAlbumsData);
+    };
+
+    fetchAlbums();
+  }, [genre]);
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto text-white">
-      <div className="px-5 mb-5">
-        <div className="w-full flex items-center gap-3 mb-5 capitalize text-xl text-white font-bold">
-          Nổi bật
-        </div>
-        <div className="flex items-center w-full">
-          {highlights.map((item, index) => (
-            <div key={index} className=" w-1/2 p-5">
-              <Image
-                src={item.imgUrl}
-                width={200}
-                height={200}
-                alt="Image"
-                className={`rounded w-[181px] h-[181px]  hover:scale-110 transition-transform duration-300`}
-              />
-              <div>{item.title}</div>
-            </div>
-          ))}
-        </div>
+      <div className="w-full">
+        <Image
+          src={
+            "https://photo-zmp3.zmdcdn.me/cover/c/9/b/3/c9b3c456eeabd9d4e3241666397d71aa.jpg"
+          }
+          width={600}
+          height={200}
+          alt="Image"
+          className="w-full"
+        />
       </div>
-      <div className="flex justify-center">
-        <div className="flex items-center justify-center rounded-full border border-[#393243] w-1/6 py-2 px-6 text-xs font-medium">
-          TẤT CẢ
-        </div>
-      </div>
-      {genre.map((genre, index) => (
+      {genresWithAlbums.map(({ genre, album }, index) => (
         <div key={index} className="mt-[48px]">
           <div className="flex justify-between p-4  text-xl">
             <div className="text-header text-white">{genre.name}</div>
@@ -76,7 +75,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex justify-center items-center px-4 gap-5">
-            {albums.map((item, index) => (
+            {album.map((item, index) => (
               <div
                 onMouseEnter={() => setHoveredButton(item.id)}
                 onMouseLeave={() => setHoveredButton(null)}
