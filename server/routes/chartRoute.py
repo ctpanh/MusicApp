@@ -15,7 +15,6 @@ router = APIRouter(
 
 @router.get("/rank")
 def rank_songs_by_views(db: Session = Depends(getDatabase)):
-    album_alias = aliased(AlbumModel)
     # Retrieve songs ranked by views in descending order
     ranked_songs = (
         db.query(
@@ -28,9 +27,7 @@ def rank_songs_by_views(db: Session = Depends(getDatabase)):
             SongModel.image_file_path,
             SongModel.release_date,
             SongModel.views,
-            album_alias.title.label("album_title"),
         )
-        .join(AlbumModel, SongModel.album_id == AlbumModel.id)
         .order_by(SongModel.views.desc())
         .limit(100)
         .all()
@@ -40,6 +37,7 @@ def rank_songs_by_views(db: Session = Depends(getDatabase)):
 
     # Iterate through ranked songs and create a dictionary for each
     for song in ranked_songs:
+        album = db.query(AlbumModel).filter(AlbumModel.id == song.album_id).first()
         song_info = {
             "id": song.id,
             "album_id": song.album_id,
@@ -50,7 +48,7 @@ def rank_songs_by_views(db: Session = Depends(getDatabase)):
             "image_file_path": song.image_file_path,
             "release_date": song.release_date,
             "views": song.views,
-            "albums_title": song.album_title,
+            "albums_title": album.title,
         }
         result.append(song_info)
 

@@ -87,11 +87,12 @@ const AudioPlayer = () => {
       id: 1,
       album_id: 1,
       playlist_id: 1,
-      title: "String",
-      artist: "string",
+      title: "Những vì tinh tú trong đôi mắt em",
+      artist: "Haisam",
       audio_file_path:
-        "https://vnso-zn-23-tf-a320-zmp3.zmdcdn.me/a5e0debc57e4d8a6fd251b8835df717a?authen=exp=1701971212~acl=/a5e0debc57e4d8a6fd251b8835df717a/*~hmac=353a1aff8eb71658a72f7463d78cbae5",
-      image_file_path: "next.svg",
+        "https://vnso-zn-15-tf-a320-zmp3.zmdcdn.me/e85ca1510b8515f6f4810e1743de53a1?authen=exp=1704713255~acl=/e85ca1510b8515f6f4810e1743de53a1/*~hmac=85cfb824db43729081a68a1de14d337b",
+      image_file_path:
+        "https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_jpeg/cover/b/1/2/d/b12d1a17d5bb78ac835dd6ca5a70ec26.jpg",
       release_date: "2023/11/2",
       views: 0,
     };

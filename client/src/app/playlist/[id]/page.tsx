@@ -2,7 +2,7 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Playlist } from "@/services/discovery/discoveryHelpers";
+import { Playlist, Song } from "@/services/discovery/discoveryHelpers";
 import {
   IconHeart,
   IconPlay,
@@ -16,6 +16,12 @@ import {
   getPlaylistById,
   getSongsByPlaylistId,
 } from "@/services/playlist/albumApi";
+import {
+  setFavoriteSongs,
+  setRecentlyHeardSongs,
+  updateSongView,
+} from "@/services/library/libraryApi";
+import { useUserStore } from "@/stores/userStore";
 
 export default function Home() {
   const params = useParams();
@@ -27,6 +33,7 @@ export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 
   const { setSong } = useSongStore();
+  const { userID } = useUserStore();
 
   const getPlaylist = async () => {
     if (id) {
@@ -37,6 +44,23 @@ export default function Home() {
   const getSongs = async () => {
     const res = await getSongsByPlaylistId(+id);
     setSongs(res.data);
+  };
+  const handlePlaySong = async (song: Song) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString();
+    if (userID) {
+      await setRecentlyHeardSongs({
+        play_date: formattedDate,
+        user_id: userID,
+        song_id: song.id,
+      });
+    } else {
+      await updateSongView(song.id);
+    }
+    setSong(song);
+  };
+  const handleFavoriteSong = async (songId: number) => {
+    if (userID) await setFavoriteSongs({ song_id: songId, user_id: userID });
   };
   useEffect(() => {
     getPlaylist();
@@ -109,7 +133,7 @@ export default function Home() {
                 {hoveredButton === item.id && (
                   <div
                     className="absolute px-4 text-white cursor-pointer"
-                    onClick={() => setSong(item)}
+                    onClick={() => handlePlaySong(item)}
                   >
                     <IconPlay1 />
                   </div>
@@ -117,9 +141,15 @@ export default function Home() {
               </div>
             </div>
             <div className={`w-1/2 opacity-50`}>{item.albums_title}</div>
-            <div className="flex gap-5 justify-end items-center mr-0 opacity-50">
+            <div
+              className="flex gap-5 justify-end items-center mr-0 opacity-50"
+              style={{ position: "relative" }}
+            >
               {hoveredButton === item.id && (
-                <div className="px-12 absolute cursor-pointer">
+                <div
+                  className="px-12 absolute cursor-pointer"
+                  onClick={() => handleFavoriteSong(item.id)}
+                >
                   <IconHeart />
                 </div>
               )}

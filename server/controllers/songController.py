@@ -42,6 +42,16 @@ class SongController:
         db.commit()
         return {"msg": "Updated"}
 
+    def updateViewSong(songId: int, db: Session):
+        dbSongId = db.query(SongModel).filter(SongModel.id == songId).first()
+
+        if dbSongId is not None:
+            dbSongId.views = dbSongId.views + 1
+            db.commit()
+            return {"msg": "Updated"}
+        else:
+            raise HTTPException(status_code=400, detail="Invalid views")
+
     def deleteSong(songId: int, db: Session):
         dbSongId = db.query(SongModel).filter(SongModel.id == songId).first()
         db.delete(dbSongId)
