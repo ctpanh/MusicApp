@@ -4,7 +4,13 @@ import { getRankSongs } from "@/services/chart/chartApi";
 import { SongChart } from "@/services/chart/chartHelpers";
 import { getNewestSongs } from "@/services/discovery/discoveryApi";
 import { Song } from "@/services/discovery/discoveryHelpers";
+import {
+  setFavoriteSongs,
+  setRecentlyHeardSongs,
+  updateSongView,
+} from "@/services/library/libraryApi";
 import { useSongStore } from "@/stores/songStore";
+import { useUserStore } from "@/stores/userStore";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 
@@ -12,12 +18,29 @@ export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [newestSongs, setNewestSongs] = useState<Song[]>([]);
   const { setSong } = useSongStore();
+  const { userID } = useUserStore();
 
   const getSongs = async () => {
     const res = await getNewestSongs();
     setNewestSongs(res.data.newest_songs);
   };
-
+  const handlePlaySong = async (song: Song) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString();
+    if (userID) {
+      await setRecentlyHeardSongs({
+        play_date: formattedDate,
+        user_id: userID,
+        song_id: song.id,
+      });
+    } else {
+      await updateSongView(song.id);
+    }
+    setSong(song);
+  };
+  const handleFavoriteSong = async (songId: number) => {
+    if (userID) await setFavoriteSongs({ song_id: songId, user_id: userID });
+  };
   useEffect(() => {
     getSongs();
   }, []);
@@ -54,7 +77,7 @@ export default function Home() {
               {hoveredButton === item.id && (
                 <div
                   className="absolute px-4 text-white cursor-pointer"
-                  onClick={() => setSong(item)}
+                  onClick={() => handlePlaySong(item)}
                 >
                   <IconPlay1 />
                 </div>
@@ -62,9 +85,15 @@ export default function Home() {
             </div>
           </div>
           <div className={`w-1/2 opacity-50`}>{item.release_date}</div>
-          <div className="flex gap-5 justify-end items-center mr-0 opacity-50">
+          <div
+            className="flex gap-5 justify-end items-center mr-0 opacity-50"
+            style={{ position: "relative" }}
+          >
             {hoveredButton === item.id && (
-              <div className="px-12 absolute cursor-pointer">
+              <div
+                className="px-12 absolute cursor-pointer"
+                onClick={() => handleFavoriteSong(item.id)}
+              >
                 <IconHeart />
               </div>
             )}

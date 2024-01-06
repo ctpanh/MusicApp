@@ -25,6 +25,9 @@ class SongController:
             db.refresh(db_song)
         return db_song
 
+    def find_song_by_name(name: str, db: Session = Depends(getDatabase)):
+        return db.query(SongModel).filter(SongModel.title.ilike(f"%{name}%")).all()
+
     def getSongById(SongId: int, db: Session = Depends(getDatabase)):
         return db.query(SongModel).filter(SongModel.id == SongId).first()
 
@@ -41,6 +44,16 @@ class SongController:
 
         db.commit()
         return {"msg": "Updated"}
+
+    def updateViewSong(songId: int, db: Session):
+        dbSongId = db.query(SongModel).filter(SongModel.id == songId).first()
+
+        if dbSongId is not None:
+            dbSongId.views = dbSongId.views + 1
+            db.commit()
+            return {"msg": "Updated"}
+        else:
+            raise HTTPException(status_code=400, detail="Invalid views")
 
     def deleteSong(songId: int, db: Session):
         dbSongId = db.query(SongModel).filter(SongModel.id == songId).first()

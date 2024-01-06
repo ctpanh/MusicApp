@@ -5,7 +5,6 @@ import {
   getNewestSongs,
 } from "@/services/discovery/discoveryApi";
 import { Album, Playlist, Song } from "@/services/discovery/discoveryHelpers";
-import { getRecentlyHeardSongs } from "@/services/history/historyApi";
 import { getAllGenre } from "@/services/hub/hubApi";
 import { Genre } from "@/services/hub/hubHelpers";
 import useAuthStore from "@/stores/authStore";
@@ -15,8 +14,16 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSongStore } from "@/stores/songStore";
 import { getAllPlaylist } from "@/services/playlist/albumApi";
+import {
+  getRecentlyHeardSongs,
+  setRecentlyHeardSongs,
+  updateSongView,
+} from "@/services/library/libraryApi";
 
 export default function Home() {
+  const { authorized } = useAuthStore();
+  const { userID } = useUserStore();
+  const { setSong } = useSongStore();
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [newestSongs, setNewestSongs] = useState<Song[]>([]);
   const [playlist, setPlaylist] = useState<Playlist[]>([]);
@@ -25,9 +32,6 @@ export default function Home() {
   >([]);
 
   const [genre, setGenre] = useState<Genre[]>([]);
-  const { authorized } = useAuthStore();
-  const { userID } = useUserStore();
-  const { setSong } = useSongStore();
   const [recentlySongs, setRecentlySongs] = useState<Song[]>([]);
 
   const getRecentlySongs = async () => {
@@ -47,6 +51,21 @@ export default function Home() {
   const getSongs = async () => {
     const res = await getNewestSongs();
     setNewestSongs(res.data.newest_songs);
+  };
+
+  const handlePlaySong = async (song: Song) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString();
+    if (userID) {
+      await setRecentlyHeardSongs({
+        play_date: formattedDate,
+        user_id: userID,
+        song_id: song.id,
+      });
+    } else {
+      await updateSongView(song.id);
+    }
+    setSong(song);
   };
 
   useEffect(() => {
@@ -85,16 +104,20 @@ export default function Home() {
   }, [genre]);
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto">
-      <div className="p-4 flex w-full justify-between transition-transform duration-500">
+      <div className="p-4 flex w-full justify-between">
         {playlist.slice(0, 3).map((item, index) => (
-          <div key={index} className="w-80">
+          <Link
+            key={index}
+            href={`/playlist/${item.id}`}
+            className="w-80 transition-transform duration-500 cursor-pointer hover:scale-110"
+          >
             <Image
               src={item.image_file_path}
               alt={`carousel-item-${index}`}
               width={400}
               height={100}
             />
-          </div>
+          </Link>
         ))}
       </div>
       {authorized && (
@@ -138,7 +161,7 @@ export default function Home() {
                   {hoveredButton === song.id && (
                     <div
                       className="absolute px-4 text-white cursor-pointer"
-                      onClick={() => setSong(song)}
+                      onClick={() => handlePlaySong(song)}
                     >
                       <IconPlay />
                     </div>
@@ -174,7 +197,7 @@ export default function Home() {
                   {hoveredButton === song.id && (
                     <div
                       className="absolute px-4 text-white cursor-pointer"
-                      onClick={() => setSong(song)}
+                      onClick={() => handlePlaySong(song)}
                     >
                       <IconPlay />
                     </div>
@@ -225,7 +248,7 @@ export default function Home() {
                 {hoveredButton === song.id && (
                   <div
                     className="absolute px-4 text-white cursor-pointer"
-                    onClick={() => setSong(song)}
+                    onClick={() => handlePlaySong(song)}
                   >
                     <IconPlay />
                   </div>
@@ -261,7 +284,7 @@ export default function Home() {
                 {hoveredButton === song.id && (
                   <div
                     className="absolute px-4 text-white cursor-pointer"
-                    onClick={() => setSong(song)}
+                    onClick={() => handlePlaySong(song)}
                   >
                     <IconPlay />
                   </div>

@@ -14,6 +14,12 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "zmp3-static.zmdcdn.me",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

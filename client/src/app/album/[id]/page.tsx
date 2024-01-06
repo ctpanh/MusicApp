@@ -2,11 +2,24 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import { Album } from "@/services/discovery/discoveryHelpers";
+import { Album, Song } from "@/services/discovery/discoveryHelpers";
 import { getAlbumById, getSongsByAlbumId } from "@/services/album/albumApi";
-import { IconHeart, IconPlay, IconPlay1, FunnelIcon, MusicalNote } from "@/assets/icons";
+import {
+  IconHeart,
+  IconPlay,
+  IconPlay1,
+  FunnelIcon,
+  MusicalNote,
+} from "@/assets/icons";
 import { useSongStore } from "@/stores/songStore";
 import { SongChart } from "@/services/chart/chartHelpers";
+import {
+  setFavoriteSongs,
+  setRecentlyHeardSongs,
+  updateSongView,
+} from "@/services/library/libraryApi";
+import { useUserStore } from "@/stores/userStore";
+import { it } from "node:test";
 
 export default function Home() {
   const params = useParams();
@@ -17,7 +30,7 @@ export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
 
   const { setSong } = useSongStore();
-
+  const { userID } = useUserStore();
   const getAlbum = async () => {
     if (id) {
       const res = await getAlbumById(+id);
@@ -27,6 +40,26 @@ export default function Home() {
   const getSongs = async () => {
     const res = await getSongsByAlbumId(+id);
     setSongs(res.data);
+  };
+  const handlePlaySong = async (song: Song) => {
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString();
+    if (userID) {
+      await setRecentlyHeardSongs({
+        play_date: formattedDate,
+        user_id: userID,
+        song_id: song.id,
+      });
+    } else {
+      await updateSongView(song.id);
+    }
+    setSong(song);
+  };
+  const handleFavoriteSong = async (songId: number) => {
+    if (userID)
+      await setFavoriteSongs({ song_id: songId, user_id: userID }).catch(
+        (err) => console.log(err)
+      );
   };
   useEffect(() => {
     getAlbum();
@@ -99,7 +132,7 @@ export default function Home() {
                 {hoveredButton === item.id && (
                   <div
                     className="absolute px-4 text-white cursor-pointer"
-                    onClick={() => setSong(item)}
+                    onClick={() => handlePlaySong(item)}
                   >
                     <IconPlay1 />
                   </div>
@@ -109,7 +142,10 @@ export default function Home() {
             <div className={`w-1/2 opacity-50`}>{item.albums_title}</div>
             <div className="flex gap-5 justify-end items-center mr-0 opacity-50">
               {hoveredButton === item.id && (
-                <div className="px-12 absolute cursor-pointer">
+                <div
+                  className="px-12 cursor-pointer"
+                  onClick={() => handleFavoriteSong(item.id)}
+                >
                   <IconHeart />
                 </div>
               )}
