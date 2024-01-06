@@ -17,3 +17,9 @@ export interface Album {
   release_date: string;
   image_file_path: string;
 }
+export interface Playlist {
+  id: number;
+  name: string;
+  user_id: number;
+  image_file_path: string;
+}

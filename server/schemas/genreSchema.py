@@ -5,6 +5,7 @@ from typing import Optional
 
 class GenreCreate(BaseModel):
     name: str
+    code: str
 
 class GenreUpdate(BaseModel):
     name: str

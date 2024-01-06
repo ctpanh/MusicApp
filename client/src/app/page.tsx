@@ -4,7 +4,7 @@ import {
   getListAlbumsByGenre,
   getNewestSongs,
 } from "@/services/discovery/discoveryApi";
-import { Album, Song } from "@/services/discovery/discoveryHelpers";
+import { Album, Playlist, Song } from "@/services/discovery/discoveryHelpers";
 import { getRecentlyHeardSongs } from "@/services/history/historyApi";
 import { getAllGenre } from "@/services/hub/hubApi";
 import { Genre } from "@/services/hub/hubHelpers";
@@ -14,18 +14,16 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSongStore } from "@/stores/songStore";
-import { getAllAlbums } from "@/services/album/albumApi";
-
-const imageUrls = [
-  "https://photo-zmp3.zmdcdn.me/banner/c/6/7/4/c674baf04c83b75e907353166f77bd5b.jpg",
-  "https://photo-zmp3.zmdcdn.me/banner/6/6/4/5/6645a50abde04b4501812379548d392f.jpg",
-  "https://photo-zmp3.zmdcdn.me/banner/c/c/6/6/cc66fbb2d8dfc12e2210239ed9a6a448.jpg",
-];
+import { getAllPlaylist } from "@/services/playlist/albumApi";
 
 export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [newestSongs, setNewestSongs] = useState<Song[]>([]);
-  const [albums, setAlbums] = useState<Album[]>([]);
+  const [playlist, setPlaylist] = useState<Playlist[]>([]);
+  const [genresWithAlbums, setGenresWithAlbums] = useState<
+    { genre: Genre; album: Album[] }[]
+  >([]);
+
   const [genre, setGenre] = useState<Genre[]>([]);
   const { authorized } = useAuthStore();
   const { userID } = useUserStore();
@@ -41,9 +39,9 @@ export default function Home() {
     setGenre(res.data);
   };
 
-  const getAlbums = async () => {
-    const res = await getAllAlbums();
-    setAlbums(res.data);
+  const getPlaylists = async () => {
+    const res = await getAllPlaylist();
+    setPlaylist(res.data);
   };
 
   const getSongs = async () => {
@@ -53,17 +51,45 @@ export default function Home() {
 
   useEffect(() => {
     getGenres();
-    getAlbums();
+    getPlaylists();
     getSongs();
     authorized && getRecentlySongs();
   }, []);
+
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      const genresWithAlbumsData: { genre: Genre; album: Album[] }[] = [];
+
+      for (const genreItem of genre) {
+        try {
+          const response = await getListAlbumsByGenre(genreItem.id);
+          const albumsData = response.data.slice(0, 6);
+
+          if (albumsData.length > 0) {
+            genresWithAlbumsData.push({
+              genre: genreItem,
+              album: albumsData,
+            });
+          }
+        } catch (error) {
+          console.error(
+            `Error fetching albums for genre ${genreItem.id}: ${error}`
+          );
+        }
+      }
+
+      setGenresWithAlbums(genresWithAlbumsData);
+    };
+
+    fetchAlbums();
+  }, [genre]);
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto">
-      <div className="flex w-full justify-center gap-10 transition-transform duration-500">
-        {imageUrls.map((url, index) => (
-          <div key={index} className="flex-shrink-0">
+      <div className="p-4 flex w-full justify-between transition-transform duration-500">
+        {playlist.slice(0, 3).map((item, index) => (
+          <div key={index} className="w-80">
             <Image
-              src={url}
+              src={item.image_file_path}
               alt={`carousel-item-${index}`}
               width={400}
               height={100}
@@ -94,7 +120,7 @@ export default function Home() {
                   style={{ position: "relative" }}
                 >
                   <Image
-                    src={"/" + song.image_file_path}
+                    src={song.image_file_path}
                     width={60}
                     height={60}
                     alt="Image"
@@ -130,7 +156,7 @@ export default function Home() {
                   style={{ position: "relative" }}
                 >
                   <Image
-                    src={"/" + song.image_file_path}
+                    src={song.image_file_path}
                     width={60}
                     height={60}
                     alt="Image"
@@ -181,7 +207,7 @@ export default function Home() {
                 style={{ position: "relative" }}
               >
                 <Image
-                  src={"/" + song.image_file_path}
+                  src={song.image_file_path}
                   width={60}
                   height={60}
                   alt="Image"
@@ -217,7 +243,7 @@ export default function Home() {
                 style={{ position: "relative" }}
               >
                 <Image
-                  src={"/" + song.image_file_path}
+                  src={song.image_file_path}
                   width={60}
                   height={60}
                   alt="Image"
@@ -245,7 +271,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      {genre.map((genre, index) => (
+      {genresWithAlbums.map(({ genre, album }, index) => (
         <div key={index} className="mt-[48px]">
           <div className="flex justify-between p-4  text-xl">
             <div className="text-header text-white">{genre.name}</div>
@@ -258,7 +284,7 @@ export default function Home() {
             </Link>
           </div>
           <div className="flex justify-center items-center px-4 gap-5">
-            {albums.slice(0, 5).map((item, index) => (
+            {album.map((item, albumIndex) => (
               <div
                 onMouseEnter={() => setHoveredButton(item.id)}
                 onMouseLeave={() => setHoveredButton(null)}
@@ -268,7 +294,7 @@ export default function Home() {
               >
                 <div className="flex flex-col justify-center items-center hover:scale-110 transition-transform duration-300">
                   <Image
-                    src={"/" + item.image_file_path}
+                    src={item.image_file_path}
                     width={100}
                     height={100}
                     alt="Image"

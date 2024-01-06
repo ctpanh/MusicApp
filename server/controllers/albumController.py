@@ -29,24 +29,47 @@ class AlbumController:
     #     db.refresh(newAlbum)
     #     return newAlbum
     def createAlbum(album: AlbumCreate, db: Session = Depends(getDatabase)):
-        new_Album = AlbumModel(
-            title=album.title,
-            release_date=album.release_date,
-            artist=album.artist,
-            genre_id=album.genre_id,
-            image_file_path=album.image_file_path
-        )
-        db.add(new_Album)
-        db.commit()
-        db.refresh(new_Album)
-        return new_Album
-    
-    
+        db_album = db.query(AlbumModel).filter(AlbumModel.code == album.code).first()
+        if not db_album:
+            db_album = AlbumModel(
+                code=album.code,
+                title=album.title,
+                release_date=album.release_date,
+                artist=album.artist,
+                genre_id=album.genre_id,
+                image_file_path=album.image_file_path,
+            )
+            db.add(db_album)
+            db.commit()
+            db.refresh(db_album)
+        return db_album
+
     def getAlbumById(AlbumId: int, db: Session = Depends(getDatabase)):
         return db.query(AlbumModel).filter(AlbumModel.id == AlbumId).first()
 
+    def getSongsByAlbumId(albumId: int, db: Session = Depends(getDatabase)):
+        album = db.query(AlbumModel).filter(AlbumModel.id == albumId).first()
+        songs = db.query(SongModel).filter(SongModel.album_id == albumId).all()
+        result = []
+        for song in songs:
+            song_info = {
+                "id": song.id,
+                "album_id": song.album_id,
+                "playlist_id": song.playlist_id,
+                "title": song.title,
+                "artist": song.artist,
+                "audio_file_path": song.audio_file_path,
+                "image_file_path": song.image_file_path,
+                "release_date": song.release_date,
+                "views": song.views,
+                "albums_title": album.title,
+            }
+            result.append(song_info)
+        return result
+
     def getAllAlbum(db: Session = Depends(getDatabase)):
         return db.query(AlbumModel).all()
+
     # def updateAlbum(AlbumId: int, Album: AlbumUpdate, db: Session):
     #     dbAlbumId = db.query(AlbumModel).filter(AlbumModel.id == AlbumId).first()
 
@@ -57,22 +80,19 @@ class AlbumController:
 
     #     db.commit()
     #     return {"msg": "Updated"}
-    
+
     def deleteAlbum(AlbumId: int, db: Session):
         dbAlbumId = db.query(AlbumModel).filter(AlbumModel.id == AlbumId).first()
         db.delete(dbAlbumId)
         db.commit()
         return {"msg": "Deleted"}
-    
+
     def getFeatureAlbums(db: Session):
         album_alias = aliased(AlbumModel)
 
         # Subquery to get the top 3 albums by views
         top_album_subquery = (
-            db.query(
-                AlbumModel.id,
-                func.sum(SongModel.views).label("total_views")
-            )
+            db.query(AlbumModel.id, func.sum(SongModel.views).label("total_views"))
             .join(SongModel, AlbumModel.id == SongModel.album_id)
             .group_by(AlbumModel.id)
             .order_by(func.sum(SongModel.views).desc())
@@ -91,7 +111,7 @@ class AlbumController:
                 SongModel.audio_file_path,
                 SongModel.image_file_path,
                 SongModel.release_date,
-                SongModel.views
+                SongModel.views,
             )
             .join(SongModel, AlbumModel.id == SongModel.album_id)
             .join(top_album_subquery, AlbumModel.id == top_album_subquery.c.id)
@@ -103,14 +123,24 @@ class AlbumController:
         result = {}
 
         # Iterate through ranked albums and songs
-        for album_id, album_title, song_id, song_title, artist, audio_file_path, image_file_path, release_date, views in ranked_albums_and_songs:
+        for (
+            album_id,
+            album_title,
+            song_id,
+            song_title,
+            artist,
+            audio_file_path,
+            image_file_path,
+            release_date,
+            views,
+        ) in ranked_albums_and_songs:
             # Add album information to the result dictionary if not already present
             if album_id not in result:
                 result[album_id] = {
                     "album_id": album_id,
                     "album_title": album_title,
                     "total_views": 0,
-                    "songs": []
+                    "songs": [],
                 }
 
             # Add song information to the album's list of songs

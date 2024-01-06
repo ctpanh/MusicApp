@@ -22,6 +22,7 @@ export const useSongStore = create<SongState>((set) => ({
   songTime: 0,
   setSong: (song) => {
     set(() => ({ song }));
+    set({ isPlaying: true });
     if (song?.id) {
       set(() => ({ songID: song.id }));
     }

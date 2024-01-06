@@ -5,5 +5,6 @@ from typing import Optional
 
 class PlaylistCreate(BaseModel):
     name: str
-    user_id: int
-
+    code: str
+    image_file_path: str
+    user_id: Optional[int] = None

@@ -4,7 +4,6 @@ from database import Base
 from sqlalchemy.orm import relationship
 
 
-
 class HistoryModel(Base):
     __tablename__ = "History"
     id = Column(Integer, primary_key=True, index=True)

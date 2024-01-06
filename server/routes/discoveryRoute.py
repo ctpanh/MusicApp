@@ -55,19 +55,19 @@ def list_albums_by_genre(genre_id: int, db: Session = Depends(getDatabase)):
 
     # Retrieve the songs for the given genre
     albums = db.query(AlbumModel).filter(AlbumModel.genre_id == genre.id).all()
-    result = []
+    # result = []
 
-    # Iterate through albums and fetch associated songs
-    for album in albums:
-        # Retrieve songs for the current album
-        songs = db.query(SongModel).filter(SongModel.album_id == album.id).all()
+    # # Iterate through albums and fetch associated songs
+    # for album in albums:
+    #     # Retrieve songs for the current album
+    #     songs = db.query(SongModel).filter(SongModel.album_id == album.id).all()
 
-        # Create a dictionary for the current album with album name and songs
-        album_info = {
-            "album_name": album.title,
-            "songs": [{"title": song.title, "artist": song.artist} for song in songs],
-        }
+    #     # Create a dictionary for the current album with album name and songs
+    #     album_info = {
+    #         "album_name": album.title,
+    #         "songs": [{"title": song.title, "artist": song.artist} for song in songs],
+    #     }
 
-        # Append the album info to the result list
-        result.append(album_info)
-    return result
+    #     # Append the album info to the result list
+    #     result.append(album_info)
+    return albums
