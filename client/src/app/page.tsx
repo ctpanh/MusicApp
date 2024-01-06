@@ -85,16 +85,20 @@ export default function Home() {
   }, [genre]);
   return (
     <div className="h-[calc(100%_-_84px)] overflow-auto">
-      <div className="p-4 flex w-full justify-between transition-transform duration-500">
+      <div className="p-4 flex w-full justify-between">
         {playlist.slice(0, 3).map((item, index) => (
-          <div key={index} className="w-80">
+          <Link
+            key={index}
+            href={`/playlist/${item.id}`}
+            className="w-80 transition-transform duration-500 cursor-pointer hover:scale-110"
+          >
             <Image
               src={item.image_file_path}
               alt={`carousel-item-${index}`}
               width={400}
               height={100}
             />
-          </div>
+          </Link>
         ))}
       </div>
       {authorized && (
