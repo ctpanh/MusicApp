@@ -33,7 +33,7 @@ const Header = () => {
             type="search"
             id="default-search"
             className="block w-1/2 p-4 pl-10 text-sm text-white rounded-full bg-[#393243] focus:bg-[#34224f]"
-            placeholder="Tìm kiếm bài hát, nghệ sĩ, lời bài hát..."
+            placeholder="Tìm kiếm bài hát"
             required
           />
         </div>
@@ -74,7 +74,15 @@ const Header = () => {
               setClickedAccount(!clickedAccount);
             }}
           >
-            <IconUser />
+            {authorized ? (
+              <IconUser />
+            ) : (
+              <div onClick={() => setOpenLoginModal(true)}>
+                <div className="w-40 flex items-center justify-center text-center rounded-xl border border-[#393243] py-2 px-1 text-xs text-white font-medium">
+                  Đăng nhập
+                </div>
+              </div>
+            )}
           </div>
           <div
             onMouseLeave={() => setClickedAccount(false)}
@@ -82,7 +90,7 @@ const Header = () => {
               !clickedAccount && "hidden"
             } absolute flex flex-col justify-between right-16 z-10 mt-2 w-56 origin-top-right rounded-md bg-[#34224f] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none`}
           >
-            {authorized ? (
+            {authorized && (
               <div>
                 {headerAccountItem.map((item, index) => (
                   <div key={index} className="flex items-center">
@@ -95,15 +103,6 @@ const Header = () => {
                     </Link>
                   </div>
                 ))}
-              </div>
-            ) : (
-              <div
-                className="flex justify-center cursor-pointer"
-                onClick={() => setOpenLoginModal(true)}
-              >
-                <div className="flex items-center justify-center rounded-full border border-[#393243] w-1/6 py-2 px-6 text-xs text-white font-medium">
-                  Đăng nhập
-                </div>
               </div>
             )}
           </div>

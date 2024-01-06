@@ -27,6 +27,11 @@ def get_Song_by_id(songId: int, db: Session = Depends(getDatabase)):
     return SongController.getSongById(songId=songId, db=db)
 
 
+@router.get("/find")
+def find_song_by_name(name: str, db: Session = Depends(getDatabase)):
+    return SongController.find_song_by_name(name=name, db=db)
+
+
 @router.put("/update/{SongId}")
 def update_Song(SongId: int, Song: SongUpdate, db: Session = Depends(getDatabase)):
     return SongController.updateSong(SongId=SongId, Song=Song, db=db)

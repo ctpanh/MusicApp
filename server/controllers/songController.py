@@ -25,6 +25,9 @@ class SongController:
             db.refresh(db_song)
         return db_song
 
+    def find_song_by_name(name: str, db: Session = Depends(getDatabase)):
+        return db.query(SongModel).filter(SongModel.title.ilike(f"%{name}%")).all()
+
     def getSongById(SongId: int, db: Session = Depends(getDatabase)):
         return db.query(SongModel).filter(SongModel.id == SongId).first()
 
