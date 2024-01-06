@@ -1,6 +1,7 @@
-from fastapi import Depends, HTTPException
-from models.user import UserModel
+from fastapi import Depends
 from models.playlist import PlaylistModel
+from models.song import SongModel
+from models.album import AlbumModel
 from schemas.playlistSchema import PlaylistCreate
 from database import getDatabase
 from sqlalchemy.orm import Session
@@ -38,6 +39,26 @@ class PlaylistController:
 
     def getAllPlaylist(db: Session = Depends(getDatabase)):
         return db.query(PlaylistModel).all()
+
+    def getSongsByPlaylistId(playlistId: int, db: Session = Depends(getDatabase)):
+        songs = db.query(SongModel).filter(SongModel.playlist_id == playlistId).all()
+        result = []
+        for song in songs:
+            album = db.query(AlbumModel).filter(AlbumModel.id == song.album_id).first()
+            song_info = {
+                "id": song.id,
+                "album_id": song.album_id,
+                "playlist_id": song.playlist_id,
+                "title": song.title,
+                "artist": song.artist,
+                "audio_file_path": song.audio_file_path,
+                "image_file_path": song.image_file_path,
+                "release_date": song.release_date,
+                "views": song.views,
+                "albums_title": album.title,
+            }
+            result.append(song_info)
+        return result
 
     # def updatePlaylist(PlaylistId: int, Playlist: PlaylistUpdate, db: Session):
     #     dbPlaylistId = db.query(PlaylistModel).filter(PlaylistModel.id == PlaylistId).first()

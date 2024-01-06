@@ -8,3 +8,6 @@ export const getAllAlbums = () => {
 export const getAlbumById = (albumId: number) => {
   return axios.get(`/album/get/${albumId}`);
 };
+export const getSongsByAlbumId = (albumId: number) => {
+  return axios.get(`/album/${albumId}/songs`);
+};

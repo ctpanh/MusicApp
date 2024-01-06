@@ -47,6 +47,26 @@ class AlbumController:
     def getAlbumById(AlbumId: int, db: Session = Depends(getDatabase)):
         return db.query(AlbumModel).filter(AlbumModel.id == AlbumId).first()
 
+    def getSongsByAlbumId(albumId: int, db: Session = Depends(getDatabase)):
+        album = db.query(AlbumModel).filter(AlbumModel.id == albumId).first()
+        songs = db.query(SongModel).filter(SongModel.album_id == albumId).all()
+        result = []
+        for song in songs:
+            song_info = {
+                "id": song.id,
+                "album_id": song.album_id,
+                "playlist_id": song.playlist_id,
+                "title": song.title,
+                "artist": song.artist,
+                "audio_file_path": song.audio_file_path,
+                "image_file_path": song.image_file_path,
+                "release_date": song.release_date,
+                "views": song.views,
+                "albums_title": album.title,
+            }
+            result.append(song_info)
+        return result
+
     def getAllAlbum(db: Session = Depends(getDatabase)):
         return db.query(AlbumModel).all()
 

@@ -16,12 +16,6 @@ import Link from "next/link";
 import { useSongStore } from "@/stores/songStore";
 import { getAllPlaylist } from "@/services/playlist/albumApi";
 
-const imageUrls = [
-  "https://photo-zmp3.zmdcdn.me/banner/c/6/7/4/c674baf04c83b75e907353166f77bd5b.jpg",
-  "https://photo-zmp3.zmdcdn.me/banner/6/6/4/5/6645a50abde04b4501812379548d392f.jpg",
-  "https://photo-zmp3.zmdcdn.me/banner/c/c/6/6/cc66fbb2d8dfc12e2210239ed9a6a448.jpg",
-];
-
 export default function Home() {
   const [hoveredButton, setHoveredButton] = useState<number | null>(null);
   const [newestSongs, setNewestSongs] = useState<Song[]>([]);
