@@ -39,7 +39,7 @@ export default function Home() {
               style={{ position: "relative" }}
             >
               <Image
-                src={"/" + item.image_file_path}
+                src={item.image_file_path}
                 width={60}
                 height={60}
                 alt="Image"

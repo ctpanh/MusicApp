@@ -86,7 +86,7 @@ export default function Home() {
               >
                 <div className="flex flex-col justify-center items-center hover:scale-110 transition-transform duration-300">
                   <Image
-                    src={"/" + item.image_file_path}
+                    src={item.image_file_path}
                     width={100}
                     height={100}
                     alt="Image"

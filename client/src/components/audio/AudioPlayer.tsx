@@ -69,6 +69,9 @@ const AudioPlayer = () => {
     };
 
     if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play();
+      }
       audioRef.current.addEventListener("timeupdate", updateSongTime);
     }
 
@@ -103,7 +106,7 @@ const AudioPlayer = () => {
         <div className="w-[60px] h-[60px] flex items-center">
           {song && (
             <Image
-              src={"/" + song.image_file_path}
+              src={song.image_file_path}
               width={60}
               height={60}
               alt="Image"

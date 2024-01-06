@@ -8,6 +8,12 @@ const nextConfig = {
         port: "",
         pathname: "/banner/**",
       },
+      {
+        protocol: "https",
+        hostname: "photo-resize-zmp3.zmdcdn.me",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 };

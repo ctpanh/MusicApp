@@ -12,11 +12,29 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
+
 @router.get("/rank")
 def rank_songs_by_views(db: Session = Depends(getDatabase)):
     album_alias = aliased(AlbumModel)
     # Retrieve songs ranked by views in descending order
-    ranked_songs = db.query(SongModel.id, SongModel.album_id, SongModel.playlist_id, SongModel.title, SongModel.artist,SongModel.audio_file_path, SongModel.image_file_path, SongModel.release_date, SongModel.views, album_alias.title.label('album_title')).join(AlbumModel, SongModel.album_id == AlbumModel.id).order_by(SongModel.views.desc()).all()
+    ranked_songs = (
+        db.query(
+            SongModel.id,
+            SongModel.album_id,
+            SongModel.playlist_id,
+            SongModel.title,
+            SongModel.artist,
+            SongModel.audio_file_path,
+            SongModel.image_file_path,
+            SongModel.release_date,
+            SongModel.views,
+            album_alias.title.label("album_title"),
+        )
+        .join(AlbumModel, SongModel.album_id == AlbumModel.id)
+        .order_by(SongModel.views.desc())
+        .limit(100)
+        .all()
+    )
     # Create a list to store the results
     result = []
 
